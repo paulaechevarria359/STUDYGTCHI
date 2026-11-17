@@ -1,0 +1,3718 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studygotchi - Mascota Virtual Retro & Armario Completo</title>
+  
+  <!-- Fuentes Google: Chakra Petch, Rajdhani, Press Start 2P -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Press+Start+2P&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================================================
+       PALETA RETRO MAGIC (Estricta):
+       - Primary Dark: #45113F
+       - Glass Container: #6B1552
+       - Accent Pink/Neon: #FF49C2
+       - Pastel Peach: #FFB4AF
+       - Soft Yellow Highlight: #FFF7AD
+       ========================================================= */
+    :root {
+      --bg-dark: #45113F;
+      --card-dark: #6B1552;
+      --accent-pink: #FF49C2;
+      --pastel-peach: #FFB4AF;
+      --bright-yellow: #FFF7AD;
+      --white-glow: rgba(255, 247, 173, 0.15);
+      
+      --font-pixel: 'Press Start 2P', monospace;
+      --font-title: 'Chakra Petch', sans-serif;
+      --font-body: 'Rajdhani', sans-serif;
+    }
+
+    ::-webkit-scrollbar {
+      width: 14px;
+      height: 14px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+      border-left: 2px solid var(--card-dark);
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.6);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--accent-pink), var(--card-dark));
+      border: 2px solid var(--bright-yellow);
+      border-radius: 8px;
+      box-shadow: 0 0 10px var(--accent-pink);
+    }
+
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent-pink) var(--bg-dark);
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--bright-yellow);
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: 1.65;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(255, 73, 194, 0.22), transparent 42%),
+        radial-gradient(circle at 85% 80%, rgba(255, 247, 173, 0.14), transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(107, 21, 82, 0.65), transparent 80%),
+        linear-gradient(rgba(255, 73, 194, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 73, 194, 0.08) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 34px 34px, 34px 34px;
+      background-attachment: fixed;
+      overflow-x: hidden;
+      padding-bottom: 60px;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(69, 17, 63, 0.14) 0px,
+        rgba(69, 17, 63, 0.14) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      z-index: 900;
+    }
+
+    body, button, a, select, input, textarea {
+      cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="%23FF49C2" stroke="%23FFF7AD" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'), auto;
+    }
+
+    header {
+      width: 100%;
+      max-width: 1120px;
+      margin-top: 14px;
+      padding: 16px 26px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 2px solid var(--accent-pink);
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(107, 21, 82, 0.94), rgba(69, 17, 63, 0.94));
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 12px;
+      z-index: 100;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55), 0 0 18px rgba(255, 73, 194, 0.28);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-pixel);
+      font-size: 1.15rem;
+      letter-spacing: 1px;
+      color: var(--bright-yellow);
+      text-shadow: 2px 2px 0 var(--bg-dark), 0 0 12px var(--accent-pink);
+    }
+
+    .brand svg {
+      width: 30px;
+      height: 30px;
+      fill: var(--accent-pink);
+      filter: drop-shadow(0 0 6px var(--bright-yellow));
+      animation: pulse 2s infinite alternate;
+    }
+
+    nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: rgba(69, 17, 63, 0.9);
+      color: var(--bright-yellow);
+      border: 2px solid var(--pastel-peach);
+      padding: 9px 18px;
+      border-radius: 12px;
+      font-family: var(--font-title);
+      font-weight: 700;
+      font-size: 0.98rem;
+      letter-spacing: 0.5px;
+      transition: all 0.22s cubic-bezier(0.25, 0.8, 0.25, 1);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 3px 0 rgba(69, 17, 63, 0.9);
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      background: linear-gradient(135deg, var(--accent-pink), #8b1a69);
+      color: var(--bright-yellow);
+      border-color: var(--bright-yellow);
+      box-shadow: 0 0 16px var(--accent-pink), inset 0 0 8px rgba(255, 247, 173, 0.35);
+      transform: translateY(-2px);
+    }
+
+    main {
+      width: 100%;
+      max-width: 1120px;
+      padding: 34px 20px;
+      flex: 1;
+    }
+
+    .view-section {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .view-section.active {
+      display: block;
+    }
+
+    .hero-card {
+      background: linear-gradient(160deg, rgba(107, 21, 82, 0.95), rgba(69, 17, 63, 0.96));
+      border: 3px solid var(--accent-pink);
+      border-radius: 28px;
+      padding: 50px 44px;
+      text-align: center;
+      box-shadow: 
+        0 14px 40px rgba(0, 0, 0, 0.6),
+        0 0 35px rgba(255, 73, 194, 0.28),
+        inset 0 0 24px rgba(255, 247, 173, 0.12);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "RETRO MAGIC SYSTEM";
+      position: absolute;
+      top: 18px;
+      left: 24px;
+      font-family: var(--font-pixel);
+      font-size: 0.58rem;
+      color: var(--pastel-peach);
+      letter-spacing: 2px;
+      opacity: 0.9;
+    }
+
+    .hero-card::after {
+      content: "VER 2.8 • RETRO EDITION";
+      position: absolute;
+      top: 18px;
+      right: 24px;
+      font-family: var(--font-pixel);
+      font-size: 0.58rem;
+      color: var(--bright-yellow);
+      background: rgba(69, 17, 63, 0.9);
+      border: 1px solid var(--accent-pink);
+      padding: 5px 10px;
+      border-radius: 999px;
+    }
+
+    .hero-title {
+      font-family: var(--font-pixel);
+      font-size: clamp(1.55rem, 3.2vw, 2.35rem);
+      color: var(--bright-yellow);
+      margin-top: 18px;
+      margin-bottom: 18px;
+      text-shadow: 4px 4px 0 var(--bg-dark), 0 0 20px var(--accent-pink);
+      line-height: 1.45;
+      letter-spacing: 1px;
+    }
+
+    .intro-box {
+      background: rgba(69, 17, 63, 0.88);
+      border: 2px solid var(--pastel-peach);
+      border-left: 6px solid var(--accent-pink);
+      border-radius: 18px;
+      padding: 30px 32px;
+      margin: 28px auto 34px auto;
+      max-width: 820px;
+      text-align: left;
+      box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.45), 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .intro-box h2 {
+      font-family: var(--font-title);
+      color: var(--bright-yellow);
+      font-size: 1.55rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-shadow: 0 0 10px rgba(255, 73, 194, 0.5);
+    }
+
+    .intro-box p {
+      color: var(--pastel-peach);
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-bottom: 14px;
+      line-height: 1.7;
+    }
+
+    .intro-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .intro-box strong {
+      color: var(--bright-yellow);
+      font-weight: 700;
+      background: rgba(255, 73, 194, 0.22);
+      padding: 1px 7px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 247, 173, 0.3);
+    }
+
+    .hero-cta-btn {
+      font-size: 1.25rem;
+      padding: 16px 36px;
+      border-radius: 14px;
+      letter-spacing: 1px;
+      box-shadow: 0 6px 0 var(--bg-dark), 0 0 24px rgba(255, 73, 194, 0.65);
+    }
+
+    .hero-cta-btn:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 8px 0 var(--bg-dark), 0 0 30px var(--bright-yellow);
+    }
+
+    /* LAYOUT LADO A LADO: TAMAGOTCHI + POMODORO */
+    .app-layout {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 30px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 900px) {
+      .app-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .right-column-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      height: 100%;
+    }
+
+    .tamagotchi-case {
+      background: linear-gradient(155deg, #7a185d, #45113F 85%);
+      border: 6px solid var(--accent-pink);
+      border-radius: 56px 56px 76px 76px;
+      padding: 26px;
+      box-shadow: 
+        0 14px 35px rgba(0, 0, 0, 0.65),
+        0 0 28px rgba(255, 73, 194, 0.45),
+        inset 0 0 18px rgba(255, 247, 173, 0.25);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .tamagotchi-case:hover {
+      box-shadow: 
+        0 18px 40px rgba(0, 0, 0, 0.7),
+        0 0 36px rgba(255, 73, 194, 0.65),
+        inset 0 0 22px rgba(255, 247, 173, 0.32);
+    }
+
+    .console-ears {
+      position: absolute;
+      top: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 210px;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .console-ear {
+      width: 44px;
+      height: 36px;
+      background: linear-gradient(145deg, var(--accent-pink), #6B1552);
+      border: 4px solid var(--bright-yellow);
+      border-radius: 50% 50% 10% 10%;
+      box-shadow: 0 -4px 12px rgba(255, 73, 194, 0.45);
+      transition: all 0.3s ease;
+      display: none;
+    }
+
+    .console-ears.ear-bunny .console-ear {
+      display: block;
+      width: 34px;
+      height: 54px;
+      top: -16px;
+      position: relative;
+      border-radius: 20px 20px 8px 8px;
+      background: linear-gradient(180deg, #FFB4AF, #FF49C2);
+    }
+
+    .console-ears.ear-cat .console-ear {
+      display: block;
+      width: 42px;
+      height: 36px;
+      border-radius: 6px 26px 6px 6px;
+      transform: rotate(-16deg);
+      background: linear-gradient(145deg, #45113F, #FF49C2);
+    }
+
+    .console-ears.ear-cat .console-ear:last-child {
+      border-radius: 26px 6px 6px 6px;
+      transform: rotate(16deg);
+    }
+
+    .console-ears.ear-bear .console-ear {
+      display: block;
+      width: 46px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #FFF7AD, #FFB4AF);
+      border-color: #FF49C2;
+    }
+
+    .console-ears.ear-frog .console-ear {
+      display: block;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #FFF7AD;
+      border: 5px solid #FF49C2;
+      box-shadow: inset 0 0 0 7px #45113F;
+    }
+
+    .console-ears.ear-dragon .console-ear {
+      display: block;
+      width: 36px;
+      height: 48px;
+      border-radius: 4px 28px 4px 18px;
+      background: linear-gradient(160deg, #FFF7AD, #FF49C2);
+      transform: rotate(-22deg);
+    }
+
+    .console-ears.ear-dragon .console-ear:last-child {
+      border-radius: 28px 4px 18px 4px;
+      transform: rotate(22deg);
+    }
+
+    .console-ears.ear-axolotl .console-ear {
+      display: block;
+      width: 48px;
+      height: 32px;
+      border-radius: 24px 6px 24px 6px;
+      background: linear-gradient(90deg, #FF49C2, #FFB4AF);
+      transform: rotate(-12deg);
+    }
+
+    .console-ears.ear-axolotl .console-ear:last-child {
+      border-radius: 6px 24px 6px 24px;
+      transform: rotate(12deg);
+    }
+
+    .console-ears.ear-star .console-ear {
+      display: block;
+      width: 38px;
+      height: 44px;
+      clip-path: polygon(50% 0%, 63% 36%, 100% 38%, 70% 60%, 82% 96%, 50% 74%, 18% 96%, 30% 60%, 0% 38%, 37% 36%);
+      background: #FFF7AD;
+      border: none;
+    }
+
+    .console-ears.ear-angel .console-ear {
+      display: block;
+      width: 52px;
+      height: 34px;
+      border-radius: 40px 4px 36px 8px;
+      background: linear-gradient(135deg, #FFF7AD, #FFB4AF);
+      border-color: #FF49C2;
+      transform: rotate(-18deg);
+    }
+
+    .console-ears.ear-angel .console-ear:last-child {
+      border-radius: 4px 40px 8px 36px;
+      transform: rotate(18deg);
+    }
+
+    .console-ears.ear-devil .console-ear {
+      display: block;
+      width: 30px;
+      height: 44px;
+      border-radius: 4px 30px 4px 20px;
+      background: linear-gradient(180deg, #FF49C2, #45113F);
+      border-color: #FFF7AD;
+      transform: rotate(-16deg);
+    }
+
+    .console-ears.ear-devil .console-ear:last-child {
+      border-radius: 30px 4px 20px 4px;
+      transform: rotate(16deg);
+    }
+
+    .console-ears.ear-panda .console-ear {
+      display: block;
+      width: 44px;
+      height: 38px;
+      border-radius: 50%;
+      background: #45113F;
+      border-color: #FFF7AD;
+    }
+
+    .console-ears.ear-crown .console-ear {
+      display: block;
+      width: 36px;
+      height: 42px;
+      clip-path: polygon(0% 100%, 0% 25%, 30% 60%, 50% 10%, 70% 60%, 100% 25%, 100% 100%);
+      background: #FFF7AD;
+      border: none;
+    }
+
+    .keychain-holder {
+      position: absolute;
+      top: -22px;
+      right: 30px;
+      font-size: 1.8rem;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+      animation: keySwing 2.5s ease-in-out infinite alternate;
+      z-index: 10;
+    }
+
+    @keyframes keySwing {
+      0% { transform: rotate(-12deg); }
+      100% { transform: rotate(12deg); }
+    }
+
+    .screen-bezel {
+      background: #2a0a27;
+      border: 4px solid var(--pastel-peach);
+      border-radius: 22px;
+      padding: 14px;
+      width: 100%;
+      box-shadow: inset 0 0 14px rgba(0,0,0,0.9), 0 0 12px rgba(255, 180, 175, 0.25);
+    }
+
+    .lcd-screen {
+      background: #ffeef8;
+      background-image: 
+        linear-gradient(rgba(255,73,194,0.05) 50%, transparent 50%),
+        linear-gradient(90deg, rgba(255,73,194,0.03) 50%, transparent 50%);
+      background-size: 100% 4px, 4px 100%;
+      border: 3px solid var(--accent-pink);
+      border-radius: 10px;
+      height: 250px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 10px;
+      position: relative;
+      overflow: hidden;
+      transition: background-color 0.4s ease, filter 0.4s ease;
+    }
+
+    .lcd-screen.lights-off {
+      background: #180617;
+      border-color: #6B1552;
+    }
+
+    .lcd-screen.lights-off .pet-stats-bar,
+    .lcd-screen.lights-off .pet-status-msg {
+      color: #FFF7AD;
+    }
+
+    .pet-stats-bar {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-family: var(--font-pixel);
+      font-size: 0.48rem;
+      color: var(--bg-dark);
+      z-index: 2;
+    }
+
+    .pet-bars-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      width: 100%;
+    }
+
+    .stat-meter {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .stat-meter-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.44rem;
+    }
+
+    .stat-meter-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(69, 17, 63, 0.25);
+      border: 1px solid #45113F;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .lcd-screen.lights-off .stat-meter-track {
+      border-color: #FF49C2;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .stat-meter-fill {
+      height: 100%;
+      transition: width 0.3s ease, background-color 0.3s ease;
+    }
+
+    .pet-avatar-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    #pet-canvas {
+      width: 145px;
+      height: 145px;
+      image-rendering: pixelated;
+    }
+
+    .pet-status-msg {
+      font-family: var(--font-pixel);
+      font-size: 0.52rem;
+      color: var(--bg-dark);
+      text-align: center;
+      line-height: 1.3;
+      min-height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 18px;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    .btn-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #FFF7AD 0%, #FFB4AF 60%, #FF49C2 100%);
+      border: 3px solid var(--bg-dark);
+      box-shadow: 
+        0 5px 0 var(--bg-dark),
+        0 7px 14px rgba(0, 0, 0, 0.55),
+        inset 0 2px 4px rgba(255, 255, 255, 0.85),
+        inset 0 -3px 5px rgba(107, 21, 82, 0.45);
+      font-size: 1.2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.16s cubic-bezier(0.25, 0.8, 0.25, 1);
+      position: relative;
+    }
+
+    .btn-btn:hover {
+      transform: translateY(-2px) scale(1.06);
+      background: radial-gradient(circle at 30% 30%, #FFFFFF 0%, #FFF7AD 55%, #FFB4AF 100%);
+      box-shadow: 
+        0 7px 0 var(--bg-dark),
+        0 0 16px var(--bright-yellow),
+        inset 0 2px 5px rgba(255, 255, 255, 0.95);
+    }
+
+    .btn-btn:active {
+      transform: translateY(3px) scale(0.97);
+      box-shadow: 
+        0 1px 0 var(--bg-dark),
+        inset 0 2px 4px rgba(69, 17, 63, 0.6);
+    }
+
+    .btn-btn.disabled-study {
+      opacity: 0.45;
+      filter: grayscale(80%);
+      pointer-events: none;
+    }
+
+    .console-quick-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+      margin-top: 18px;
+    }
+
+    .console-pill-btn {
+      background: linear-gradient(180deg, #8b1a69 0%, #45113F 100%);
+      color: var(--bright-yellow);
+      border: 2px solid var(--pastel-peach);
+      border-radius: 14px;
+      padding: 9px 12px;
+      font-family: var(--font-title);
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 
+        0 4px 0 #260722,
+        0 6px 12px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 247, 173, 0.45);
+      transition: all 0.18s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .console-pill-btn:hover {
+      background: linear-gradient(180deg, #FF49C2 0%, #8b1a69 100%);
+      border-color: var(--bright-yellow);
+      color: #FFFFFF;
+      transform: translateY(-2px);
+      box-shadow: 
+        0 6px 0 #260722,
+        0 0 16px rgba(255, 73, 194, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    }
+
+    .console-pill-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #260722;
+    }
+
+    /* ESTÉTICA POMODORO RETRO MAGIC (AL LADO DEL TAMAGOTCHI) */
+    .study-card {
+      background: linear-gradient(160deg, rgba(107, 21, 82, 0.96), rgba(69, 17, 63, 0.98));
+      border: 4px solid var(--accent-pink);
+      border-radius: 32px;
+      padding: 30px 32px;
+      text-align: center;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 
+        0 14px 36px rgba(0, 0, 0, 0.6),
+        0 0 28px rgba(255, 73, 194, 0.35),
+        inset 0 0 22px rgba(255, 247, 173, 0.12);
+    }
+
+    .study-card::before {
+      content: "FOCUS DECK • CH-01";
+      position: absolute;
+      top: 14px;
+      left: 22px;
+      font-family: var(--font-pixel);
+      font-size: 0.5rem;
+      color: var(--pastel-peach);
+      letter-spacing: 1px;
+      opacity: 0.85;
+    }
+
+    .study-card::after {
+      content: "★ 90s STUDY LINK";
+      position: absolute;
+      top: 14px;
+      right: 22px;
+      font-family: var(--font-pixel);
+      font-size: 0.5rem;
+      color: var(--bright-yellow);
+      opacity: 0.9;
+    }
+
+    .pomodoro-header-area {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .study-title {
+      font-family: var(--font-pixel);
+      font-size: 1.35rem;
+      color: var(--bright-yellow);
+      text-shadow: 3px 3px 0 var(--bg-dark), 0 0 14px var(--accent-pink);
+      margin-bottom: 0;
+      letter-spacing: 2px;
+    }
+
+    .pomodoro-mode-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(69, 17, 63, 0.92);
+      border: 2px solid var(--pastel-peach);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-family: var(--font-pixel);
+      font-size: 0.56rem;
+      color: var(--pastel-peach);
+      letter-spacing: 0.8px;
+      box-shadow: 0 0 12px rgba(255, 180, 175, 0.2);
+    }
+
+    .pomodoro-mode-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-pink);
+      box-shadow: 0 0 8px var(--accent-pink);
+      animation: pulse 1.4s infinite alternate;
+    }
+
+    .timer-bezel-frame {
+      background: #2a0a27;
+      border: 3px solid var(--pastel-peach);
+      border-radius: 24px;
+      padding: 12px;
+      margin: 18px 0;
+      box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.9), 0 0 18px rgba(255, 73, 194, 0.25);
+    }
+
+    .timer-display {
+      font-family: var(--font-pixel);
+      font-size: clamp(2.6rem, 4.6vw, 3.8rem);
+      color: var(--bright-yellow);
+      background: 
+        radial-gradient(circle at 50% 0%, rgba(255, 73, 194, 0.22), transparent 70%),
+        repeating-linear-gradient(
+          0deg,
+          rgba(255, 73, 194, 0.06) 0px,
+          rgba(255, 73, 194, 0.06) 2px,
+          transparent 2px,
+          transparent 4px
+        ),
+        #45113F;
+      border: 3px solid var(--accent-pink);
+      border-radius: 16px;
+      padding: 30px 16px;
+      margin-bottom: 0;
+      text-shadow: 4px 4px 0 #260722, 0 0 20px var(--accent-pink);
+      box-shadow: inset 0 0 22px rgba(0, 0, 0, 0.75);
+      letter-spacing: 3px;
+    }
+
+    .pomodoro-info-strip {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 10px;
+      background: rgba(69, 17, 63, 0.78);
+      border: 1px dashed var(--pastel-peach);
+      border-radius: 14px;
+      padding: 10px 14px;
+      margin-bottom: 18px;
+      font-family: var(--font-title);
+      font-size: 0.95rem;
+      color: var(--pastel-peach);
+    }
+
+    .pomodoro-info-strip span strong {
+      color: var(--bright-yellow);
+    }
+
+    .timer-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 4px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(180deg, #FF66CC 0%, #FF49C2 45%, #9e1b76 100%);
+      color: var(--bright-yellow);
+      border: 2px solid var(--bright-yellow);
+      padding: 13px 28px;
+      border-radius: 14px;
+      font-family: var(--font-title);
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.8px;
+      text-shadow: 1px 1px 0 var(--bg-dark);
+      box-shadow: 
+        0 5px 0 #2b0827,
+        0 8px 18px rgba(255, 73, 194, 0.45),
+        inset 0 2px 0 rgba(255, 255, 255, 0.55);
+      transition: all 0.18s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(180deg, #FF85D6 0%, #FF49C2 55%, #b8218a 100%);
+      color: #FFFFFF;
+      box-shadow: 
+        0 7px 0 #2b0827,
+        0 0 22px var(--bright-yellow),
+        inset 0 2px 0 rgba(255, 255, 255, 0.75);
+    }
+
+    .btn-primary:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #2b0827;
+    }
+
+    .btn-secondary-retro {
+      background: linear-gradient(180deg, #7c195f 0%, #45113F 100%);
+      border-color: var(--pastel-peach);
+      box-shadow: 
+        0 5px 0 #22061e,
+        0 6px 14px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 247, 173, 0.35);
+    }
+
+    .btn-secondary-retro:hover {
+      background: linear-gradient(180deg, #961e73 0%, #57154f 100%);
+      border-color: var(--bright-yellow);
+    }
+
+    .food-grid-modal {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .food-choice-card {
+      background: linear-gradient(180deg, #7c195f 0%, #45113F 100%);
+      border: 2px solid var(--pastel-peach);
+      border-radius: 14px;
+      padding: 12px 10px;
+      color: var(--bright-yellow);
+      font-family: var(--font-title);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.18s ease;
+      box-shadow: 0 4px 0 #260722;
+    }
+
+    .food-choice-card:hover {
+      border-color: var(--bright-yellow);
+      background: linear-gradient(180deg, #FF49C2 0%, #8b1a69 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #260722, 0 0 14px var(--accent-pink);
+    }
+
+    .wardrobe-items {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .accessory-btn {
+      background: linear-gradient(180deg, #7c195f 0%, #45113F 100%);
+      border: 2px solid var(--pastel-peach);
+      border-radius: 12px;
+      padding: 10px;
+      font-size: 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.18s ease;
+      box-shadow: 0 3px 0 #260722;
+    }
+
+    .accessory-btn:hover {
+      border-color: var(--bright-yellow);
+      transform: translateY(-2px);
+    }
+
+    .accessory-btn.equipped {
+      border-color: var(--bright-yellow);
+      background: linear-gradient(180deg, #FF49C2 0%, #8b1a69 100%);
+      box-shadow: 0 0 12px var(--accent-pink);
+    }
+
+    .wardrobe-shells-drawer {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+
+    .owned-shell-chip {
+      background: rgba(69, 17, 63, 0.9);
+      border: 1px solid var(--pastel-peach);
+      color: var(--bright-yellow);
+      border-radius: 10px;
+      padding: 6px 8px;
+      font-family: var(--font-title);
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.18s ease;
+    }
+
+    .owned-shell-chip:hover, .owned-shell-chip.active {
+      border-color: var(--bright-yellow);
+      background: var(--accent-pink);
+    }
+
+    .shell-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      border: 1px solid #FFF;
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+      background: rgba(69, 17, 63, 0.5);
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    .setting-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .setting-group label {
+      font-size: 0.95rem;
+      color: var(--pastel-peach);
+      font-weight: 600;
+    }
+
+    .setting-group input, .setting-group select {
+      background: var(--bg-dark);
+      border: 1px solid var(--pastel-peach);
+      color: var(--bright-yellow);
+      padding: 8px;
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+    }
+
+    .history-card {
+      background: var(--card-dark);
+      border: 2px solid var(--accent-pink);
+      border-radius: 20px;
+      padding: 35px;
+      box-shadow: 0 0 25px rgba(255, 73, 194, 0.2);
+    }
+
+    .history-card h2 {
+      font-family: var(--font-title);
+      font-size: 2rem;
+      color: var(--bright-yellow);
+      border-bottom: 2px solid var(--accent-pink);
+      padding-bottom: 12px;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .history-section-title {
+      font-family: var(--font-title);
+      font-size: 1.4rem;
+      color: var(--bright-yellow);
+      margin: 25px 0 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .history-card p {
+      color: var(--pastel-peach);
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      text-align: justify;
+    }
+
+    .timeline-container {
+      border-left: 3px solid var(--accent-pink);
+      padding-left: 20px;
+      margin: 20px 0;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 25px;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -27px;
+      top: 5px;
+      width: 12px;
+      height: 12px;
+      background: var(--bright-yellow);
+      border: 2px solid var(--accent-pink);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--bright-yellow);
+    }
+
+    .timeline-date {
+      font-family: var(--font-pixel);
+      font-size: 0.85rem;
+      color: var(--bright-yellow);
+      margin-bottom: 6px;
+    }
+
+    .timeline-desc {
+      color: var(--pastel-peach);
+      font-size: 1.05rem;
+    }
+
+    /* PUBLICIDADES RETRO EN LOS BORDES */
+    .edge-ad-rail {
+      position: fixed;
+      top: 108px;
+      width: 176px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      z-index: 95;
+    }
+
+    .edge-ad-rail.left-rail {
+      left: 14px;
+    }
+
+    .edge-ad-rail.right-rail {
+      right: 14px;
+    }
+
+    @media (max-width: 1480px) {
+      .edge-ad-rail {
+        display: none;
+      }
+    }
+
+    .edge-ad-box {
+      background: linear-gradient(160deg, rgba(107, 21, 82, 0.96), rgba(69, 17, 63, 0.98));
+      border: 2px solid var(--accent-pink);
+      border-radius: 14px;
+      padding: 12px 10px 10px 10px;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.65), 0 0 14px rgba(255, 73, 194, 0.32);
+      position: relative;
+      text-align: center;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .edge-ad-box:hover {
+      transform: translateY(-2px);
+      border-color: var(--bright-yellow);
+    }
+
+    .edge-ad-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      border-bottom: 1px dashed rgba(255, 180, 175, 0.45);
+      padding-bottom: 4px;
+    }
+
+    .edge-ad-label {
+      font-family: var(--font-pixel);
+      font-size: 0.44rem;
+      color: var(--pastel-peach);
+      letter-spacing: 0.5px;
+    }
+
+    .edge-ad-close {
+      background: var(--bg-dark);
+      color: var(--bright-yellow);
+      border: 1px solid var(--pastel-peach);
+      border-radius: 4px;
+      width: 18px;
+      height: 18px;
+      font-family: var(--font-pixel);
+      font-size: 0.45rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .edge-ad-close:hover {
+      background: var(--accent-pink);
+      border-color: var(--bright-yellow);
+    }
+
+    .edge-ad-egg-wrap {
+      background: radial-gradient(circle, rgba(255, 247, 173, 0.2) 0%, rgba(69, 17, 63, 0.95) 78%);
+      border: 1px dashed var(--accent-pink);
+      border-radius: 10px;
+      padding: 10px 6px;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .mini-egg-shell {
+      width: 68px;
+      height: 82px;
+      border-radius: 36px 36px 44px 44px;
+      border: 3px solid var(--bright-yellow);
+      padding: 9px 7px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      margin-top: 8px;
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.6), inset 0 0 8px rgba(255, 247, 173, 0.35);
+      transition: all 0.25s ease;
+    }
+
+    .mini-egg-shell::before,
+    .mini-egg-shell::after {
+      content: "";
+      position: absolute;
+      display: none;
+      z-index: -1;
+    }
+
+    .mini-egg-shell.shell-bunny {
+      background: linear-gradient(145deg, #FFB4AF, #FF49C2);
+      border-color: #FFF7AD;
+    }
+    .mini-egg-shell.shell-bunny::before,
+    .mini-egg-shell.shell-bunny::after {
+      display: block;
+      width: 14px;
+      height: 24px;
+      top: -17px;
+      background: #FFB4AF;
+      border: 2px solid #FFF7AD;
+      border-radius: 10px 10px 2px 2px;
+    }
+    .mini-egg-shell.shell-bunny::before { left: 11px; transform: rotate(-8deg); }
+    .mini-egg-shell.shell-bunny::after { right: 11px; transform: rotate(8deg); }
+
+    .mini-egg-shell.shell-cat {
+      background: linear-gradient(145deg, #45113F, #FF49C2);
+      border-color: #FFF7AD;
+    }
+    .mini-egg-shell.shell-cat::before,
+    .mini-egg-shell.shell-cat::after {
+      display: block;
+      width: 18px;
+      height: 16px;
+      top: -10px;
+      background: #6B1552;
+      border: 2px solid #FFF7AD;
+    }
+    .mini-egg-shell.shell-cat::before { left: 6px; border-radius: 3px 12px 2px 2px; transform: rotate(-16deg); }
+    .mini-egg-shell.shell-cat::after { right: 6px; border-radius: 12px 3px 2px 2px; transform: rotate(16deg); }
+
+    .mini-egg-shell.shell-bear {
+      background: linear-gradient(145deg, #FFF7AD, #FFB4AF);
+      border-color: #FF49C2;
+    }
+    .mini-egg-shell.shell-bear::before,
+    .mini-egg-shell.shell-bear::after {
+      display: block;
+      width: 18px;
+      height: 18px;
+      top: -10px;
+      background: #FFF7AD;
+      border: 2px solid #FF49C2;
+      border-radius: 50%;
+    }
+    .mini-egg-shell.shell-bear::before { left: 5px; }
+    .mini-egg-shell.shell-bear::after { right: 5px; }
+
+    .mini-egg-shell.shell-frog {
+      background: linear-gradient(145deg, #6B1552, #FF49C2);
+      border-color: #FFF7AD;
+    }
+    .mini-egg-shell.shell-frog::before,
+    .mini-egg-shell.shell-frog::after {
+      display: block;
+      width: 17px;
+      height: 17px;
+      top: -10px;
+      background: #FFF7AD;
+      border: 2px solid #FF49C2;
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 3px #45113F;
+    }
+    .mini-egg-shell.shell-frog::before { left: 7px; }
+    .mini-egg-shell.shell-frog::after { right: 7px; }
+
+    .mini-egg-shell.shell-dragon {
+      background: linear-gradient(155deg, #FF49C2, #45113F);
+      border-color: #FFF7AD;
+      border-radius: 26px 26px 44px 44px;
+    }
+    .mini-egg-shell.shell-dragon::before,
+    .mini-egg-shell.shell-dragon::after {
+      display: block;
+      width: 14px;
+      height: 20px;
+      top: -13px;
+      background: linear-gradient(180deg, #FFF7AD, #FF49C2);
+      border: 2px solid #FFF7AD;
+    }
+    .mini-egg-shell.shell-dragon::before { left: 8px; border-radius: 2px 14px 2px 8px; transform: rotate(-20deg); }
+    .mini-egg-shell.shell-dragon::after { right: 8px; border-radius: 14px 2px 8px 2px; transform: rotate(20deg); }
+
+    .mini-egg-shell.shell-axolotl {
+      background: linear-gradient(145deg, #FFB4AF, #6B1552);
+      border-color: #FF49C2;
+    }
+    .mini-egg-shell.shell-axolotl::before,
+    .mini-egg-shell.shell-axolotl::after {
+      display: block;
+      width: 20px;
+      height: 14px;
+      top: 6px;
+      background: #FF49C2;
+      border: 2px solid #FFF7AD;
+    }
+    .mini-egg-shell.shell-axolotl::before { left: -13px; border-radius: 12px 2px 12px 2px; transform: rotate(-14deg); }
+    .mini-egg-shell.shell-axolotl::after { right: -13px; border-radius: 2px 12px 2px 12px; transform: rotate(14deg); }
+
+    .mini-egg-shell.shell-crystal {
+      background: linear-gradient(145deg, #FF49C2, #6B1552);
+    }
+
+    .mini-egg-shell.shell-velvet {
+      background: linear-gradient(145deg, #45113F, #6B1552);
+      border-color: var(--accent-pink);
+    }
+
+    .mini-egg-screen {
+      width: 42px;
+      height: 32px;
+      background: #ffeef8;
+      border: 2px solid var(--bg-dark);
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: var(--font-pixel);
+      font-size: 0.44rem;
+      color: var(--bg-dark);
+    }
+
+    .mini-egg-buttons {
+      display: flex;
+      gap: 5px;
+    }
+
+    .mini-egg-buttons span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--bright-yellow);
+      border: 1px solid var(--bg-dark);
+    }
+
+    .edge-ad-title {
+      font-family: var(--font-title);
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: var(--bright-yellow);
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .edge-ad-sub {
+      font-size: 0.82rem;
+      color: var(--pastel-peach);
+      line-height: 1.25;
+      margin-bottom: 7px;
+    }
+
+    .edge-ad-price {
+      font-family: var(--font-pixel);
+      font-size: 0.5rem;
+      color: var(--bright-yellow);
+      background: var(--bg-dark);
+      border: 1px solid var(--accent-pink);
+      border-radius: 6px;
+      padding: 4px 5px;
+      margin-bottom: 8px;
+    }
+
+    .edge-ad-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+    }
+
+    .edge-ad-btn {
+      padding: 5px 4px;
+      border-radius: 6px;
+      font-family: var(--font-title);
+      font-weight: 700;
+      font-size: 0.76rem;
+      text-align: center;
+      transition: all 0.18s ease;
+    }
+
+    .edge-ad-btn.try {
+      background: var(--card-dark);
+      color: var(--bright-yellow);
+      border: 1px solid var(--pastel-peach);
+    }
+
+    .edge-ad-btn.try:hover {
+      background: var(--accent-pink);
+      border-color: var(--bright-yellow);
+    }
+
+    .edge-ad-btn.buy {
+      background: var(--accent-pink);
+      color: var(--bright-yellow);
+      border: 1px solid var(--bright-yellow);
+    }
+
+    .edge-ad-btn.buy:hover {
+      background: var(--bright-yellow);
+      color: var(--bg-dark);
+    }
+
+    .bottom-edge-banner {
+      position: fixed;
+      bottom: 14px;
+      left: 14px;
+      width: 310px;
+      max-width: calc(100vw - 105px);
+      background: linear-gradient(135deg, rgba(107, 21, 82, 0.97), rgba(69, 17, 63, 0.98));
+      border: 2px solid var(--accent-pink);
+      border-radius: 14px;
+      padding: 10px 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 16px rgba(255, 73, 194, 0.35);
+      z-index: 96;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .bottom-edge-banner.hidden {
+      display: none;
+    }
+
+    .bottom-banner-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .bottom-banner-tag {
+      font-family: var(--font-pixel);
+      font-size: 0.44rem;
+      color: var(--accent-pink);
+      margin-bottom: 3px;
+    }
+
+    .bottom-banner-title {
+      font-family: var(--font-title);
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--bright-yellow);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .bottom-banner-actions {
+      display: flex;
+      gap: 5px;
+      margin-top: 5px;
+    }
+
+    .ai-fab {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      background: var(--accent-pink);
+      border: 3px solid var(--bright-yellow);
+      color: var(--bright-yellow);
+      font-family: var(--font-pixel);
+      font-size: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 0 20px var(--accent-pink);
+      z-index: 999;
+      transition: all 0.3s ease;
+    }
+
+    .ai-fab:hover {
+      transform: scale(1.1) rotate(5deg);
+      background: var(--bright-yellow);
+      color: var(--bg-dark);
+      border-color: var(--accent-pink);
+    }
+
+    .loot-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(69, 17, 63, 0.85);
+      backdrop-filter: blur(8px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .loot-modal.active {
+      display: flex;
+    }
+
+    .loot-card {
+      background: var(--card-dark);
+      border: 4px solid var(--bright-yellow);
+      border-radius: 24px;
+      padding: 30px;
+      text-align: center;
+      max-width: 380px;
+      box-shadow: 0 0 30px var(--accent-pink);
+      animation: popUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .loot-icon {
+      font-size: 4rem;
+      margin: 15px 0;
+      animation: pulse 1.5s infinite alternate;
+    }
+
+    @keyframes popUp {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.1); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ENCABEZADO Y NAVEGACIÓN -->
+  <header>
+    <div class="brand">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+      STUDYGOTCHI
+    </div>
+    <nav>
+      <button class="nav-btn active" onclick="switchTab('home')">Inicio</button>
+      <button class="nav-btn" onclick="switchTab('study')">Pomodoro / Estudio</button>
+      <button class="nav-btn" onclick="switchTab('history')">Enciclopedia Histórica</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- VISTA: INICIO -->
+    <section id="view-home" class="view-section active">
+      <div class="hero-card">
+        <h1 class="hero-title">STUDYGOTCHI PARADISE</h1>
+        
+        <div class="intro-box">
+          <h2>Bienvenido a tu Espacio de Enfoque</h2>
+          <p>
+            Bienvenidos al <strong>Studygotchi</strong>. Aquí encontrarás una mascota virtual interactiva diseñada para acompañarte en tus sesiones de estudio con estética retro de los años 90.
+          </p>
+
+          <p>
+            Al estudiar, tu mascota usará lentes y te enviará palabras de aliento continuas para que no te rindas. Durante el estudio tu mascota es inmune, y en los descansos podrás sacarla a tomar aire al patio.
+          </p>
+        </div>
+
+        <button class="btn-primary hero-cta-btn" onclick="switchTab('study')">COMENZAR A ESTUDIAR AHORA</button>
+      </div>
+    </section>
+
+    <!-- VISTA: ESTUDIO & TAMAGOTCHI (LADO A LADO) -->
+    <section id="view-study" class="view-section">
+      <div class="app-layout">
+        
+        <!-- COLUMNA IZQUIERDA: CONSOLA TAMAGOTCHI -->
+        <div class="tamagotchi-case" id="tamagotchi-console-case">
+          <div class="console-ears" id="console-ears-display">
+            <div class="console-ear"></div>
+            <div class="console-ear"></div>
+          </div>
+          <div class="keychain-holder" id="keychain-display">🎀</div>
+
+          <div class="screen-bezel">
+            <div class="lcd-screen" id="lcd-screen">
+              <div class="pet-stats-bar">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span id="stat-species-badge">XENO-BUNNY • NV.1</span>
+                  <span>COINS:<span id="stat-coins">50</span></span>
+                </div>
+                <div class="pet-bars-row">
+                  <div class="stat-meter" title="Vida / Salud">
+                    <div class="stat-meter-label"><span>VIDA</span><span id="val-health">100%</span></div>
+                    <div class="stat-meter-track"><div class="stat-meter-fill" id="bar-health" style="width:100%; background:#00E676;"></div></div>
+                  </div>
+                  <div class="stat-meter" title="Hambre">
+                    <div class="stat-meter-label"><span>HAMBRE</span><span id="val-hunger">100%</span></div>
+                    <div class="stat-meter-track"><div class="stat-meter-fill" id="bar-hunger" style="width:100%; background:#FF9100;"></div></div>
+                  </div>
+                  <div class="stat-meter" title="Estado de Ánimo">
+                    <div class="stat-meter-label"><span>ÁNIMO</span><span id="val-happy">100%</span></div>
+                    <div class="stat-meter-track"><div class="stat-meter-fill" id="bar-happy" style="width:100%; background:#FF49C2;"></div></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pet-avatar-container">
+                <canvas id="pet-canvas" width="64" height="64" onclick="toggleLights()" title="Haz clic en la lámpara o usa 💡 para apagar/encender la luz"></canvas>
+              </div>
+
+              <div class="pet-status-msg" id="pet-msg">Xeno-Bunny está listo para estudiar.</div>
+            </div>
+          </div>
+
+          <div class="controls">
+            <button class="btn-btn" onclick="openFoodModal()" title="Elegir Comida">🍙</button>
+            <button class="btn-btn" id="btn-play-action" onclick="playPet()" title="Jugar">🎮</button>
+            <button class="btn-btn" onclick="cleanPet()" title="Limpiar Suciedad">🧹</button>
+            <button class="btn-btn" id="btn-light" onclick="toggleLights()" title="Encender / Apagar Luz de la Casita">💡</button>
+            <button class="btn-btn" id="btn-patio" onclick="takePetToPatio()" title="Salir al Patio (Solo en Descanso)" style="display:none;">🌳</button>
+          </div>
+
+          <div class="console-quick-actions">
+            <button class="console-pill-btn" onclick="openWardrobeModal()">
+              <span>👗 Armario</span>
+            </button>
+            <button class="console-pill-btn" onclick="hatchNewPetEgg()">
+              <span>🥚 Nuevo Huevo</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- COLUMNA DERECHA: POMODORO (AL LADO DEL TAMAGOTCHI) -->
+        <div class="right-column-stack">
+          <div class="study-card">
+            <div class="pomodoro-header-area">
+              <h2 class="study-title">POMODORO</h2>
+              <div class="pomodoro-mode-badge" id="pomodoro-mode-badge">
+                <span class="pomodoro-mode-dot" id="pomodoro-mode-dot"></span>
+                <span id="pomodoro-mode-text">MODO ESTUDIO • BLOQUE 1/4</span>
+              </div>
+            </div>
+            
+            <div class="timer-bezel-frame">
+              <div class="timer-display" id="timer-display">25:00</div>
+            </div>
+
+            <div>
+              <div class="pomodoro-info-strip">
+                <span>Estudio: <strong id="strip-study-min">25 min</strong></span>
+                <span>•</span>
+                <span>Descanso: <strong id="strip-break-min">5 min</strong></span>
+                <span>•</span>
+                <span>Ciclos: <strong id="strip-cycle-count">1 / 4</strong></span>
+              </div>
+
+              <div class="timer-controls">
+                <button class="btn-primary" id="btn-start" onclick="toggleTimer()">INICIAR</button>
+                <button class="btn-primary btn-secondary-retro" onclick="resetTimer()">REINICIAR</button>
+                <button class="btn-primary btn-secondary-retro" onclick="openSettingsModal()" title="Ajustar tiempos y sonido">⚙️</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- VISTA: HISTORIA -->
+    <section id="view-history" class="view-section">
+      <div class="history-card">
+        <h2>Enciclopedia Histórica del Tamagotchi (1996 - Presente)</h2>
+        
+        <p>
+          El <strong>Tamagotchi</strong> (たまごっち) nació el 23 de noviembre de 1996 en Japón como una creación ideada por <strong>Aki Maita</strong>, empleada del departamento de marketing de Bandai, junto al diseñador de juguetes <strong>Akihiro Yokoi</strong> de la firma Wiz Co. Su concepto revolucionó la industria del entretenimiento portátil al transformar un llavero electrónico en un ser vivo digital que exigía atención en tiempo real.
+        </p>
+
+        <h3 class="history-section-title">Origen del Nombre y las Pruebas Secretas en Shibuya</h3>
+        <p>
+          El nombre proviene de la fusión entre la palabra japonesa <strong>tamago</strong> (たまご, "huevo") y el término inglés <strong>watch</strong> ("reloj"), reflejando tanto su carcasa ovoide como su reloj interno de 24 horas. Antes de aprobar su producción masiva, Aki Maita distribuyó personalmente alrededor de <strong>200 prototipos</strong> entre estudiantes de secundaria en el barrio de Shibuya, Tokio, grabando sus reacciones en vídeo para demostrar a los directivos de Bandai el vínculo emocional inmediato que generaba la mascota.
+        </p>
+
+        <h3 class="history-section-title">Arquitectura de Hardware Clásica (4-Bit) y Curiosidades</h3>
+        <p>
+          El modelo original Tamagotchi P1 funcionaba con un microprocesador de <strong>4 bits</strong> (Epson E0C6S46), una pantalla monocromática LCD de apenas <strong>32×16 píxeles</strong> y dos pilas de botón LR44. Pese a su sencillez técnica, vendió más de 40 millones de unidades en sus primeros años y en 1997 otorgó a Aki Maita y Akihiro Yokoi el <strong>Premio Ig Nobel de Economía</strong> por haber desviado millones de horas-hombre de trabajo hacia el cuidado de mascotas virtuales.
+        </p>
+
+        <h3 class="history-section-title">Cronología Detallada de su Evolución</h3>
+        <div class="timeline-container">
+          <div class="timeline-item">
+            <div class="timeline-date">23 de Noviembre de 1996 — Lanzamiento en Japón</div>
+            <div class="timeline-desc"><strong>Tamagotchi Generación 1 (P1):</strong> Sale a la venta por 1.980 yenes. Se agota en cuestión de horas en Tokio y provoca filas kilométricas frente a las jugueterías, dando origen a personajes icónicos como Mametchi, Kuchipatchi y Ginjirotchi.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">Mayo de 1997 — Expansión Mundial y Fenómeno Cultural</div>
+            <div class="timeline-desc"><strong>Llegada a Occidente y Generación 2 (P2):</strong> El dispositivo debuta en Estados Unidos y Europa con nuevos minijuegos y personajes secretos como Mimitchi. Muchas escuelas llegan a prohibirlo en las aulas debido a los pitidos constantes durante las clases.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">Agosto de 1997 — Tamagotchi Angel (Angelgotchi)</div>
+            <div class="timeline-desc"><strong>Sensores Táctiles en la Carcasa:</strong> Bandai introduce una edición temática celestial equipada con un sensor de impacto que permitía dar golpecitos suaves al costado de la carcasa para espantar murciélagos que intentaban robar los dulces de la mascota.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">1998 — Tama-School y Ediciones Especiales</div>
+            <div class="timeline-desc"><strong>Tamagotchi Ocean y Forest:</strong> Se lanzan variantes con mecánicas ambientales complejas (como mantener limpia la calidad del agua en Umino Tamagotchi), consideradas por los coleccionistas como las ediciones más desafiantes de cuidar.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2004 — La Revolución Infrarroja</div>
+            <div class="timeline-desc"><strong>Tamagotchi Connection (Plus):</strong> Tras una pausa de seis años, la franquicia regresa incorporando un puerto de comunicación por infrarrojos (IR) en la parte superior, permitiendo que dos mascotas visitaran sus casas, intercambiaran regalos, compitieran y formaran familias multigeneracionales.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2008 — El Salto al Color</div>
+            <div class="timeline-desc"><strong>Tamagotchi Plus Color (TMGC+C):</strong> Primer dispositivo de la línea principal con pantalla LCD retroiluminada a todo color, introduciendo cambios climáticos en tiempo real, decoración de habitaciones y objetos coleccionables.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">2023 — Conectividad Global</div>
+            <div class="timeline-desc"><strong>Tamagotchi Uni:</strong> Incorpora conectividad Wi-Fi integrada, batería recargable por USB-C, correa estilo reloj de pulsera y acceso al espacio social en línea <em>Tamaverse</em> con eventos globales sincronizados.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-date">Actualidad — Enfoque y Productividad Retro</div>
+            <div class="timeline-desc"><strong>Studygotchi Edition:</strong> Evolución web inspirada en la estética clásica de 1996, fusionando la crianza virtual con técnicas Pomodoro, lectura en biblioteca y control externo programable.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- PUBLICIDADES EN LOS BORDES DE LA PANTALLA -->
+  <aside class="edge-ad-rail left-rail" aria-label="Publicidades laterales izquierda">
+    <div class="edge-ad-box" id="edge-ad-1">
+      <div class="edge-ad-top">
+        <span class="edge-ad-label" id="ad-slot-0-tag">EDICIÓN ANIMAL</span>
+        <button class="edge-ad-close" onclick="closeEdgeAd('edge-ad-1')" title="Cerrar anuncio">X</button>
+      </div>
+      <div class="edge-ad-egg-wrap">
+        <div class="mini-egg-shell shell-bunny" id="ad-slot-0-shell">
+          <div class="mini-egg-screen" id="ad-slot-0-code">BUNNY</div>
+          <div class="mini-egg-buttons"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+      <div class="edge-ad-title" id="ad-slot-0-title">Usagi Pastel Bunny</div>
+      <div class="edge-ad-sub" id="ad-slot-0-sub">Carcasa con orejas largas de conejo.</div>
+      <div class="edge-ad-price" id="ad-slot-0-price">140 CYBER-COINS</div>
+      <div class="edge-ad-btns">
+        <button class="edge-ad-btn try" onclick="tryAdSlot(0)">Probar</button>
+        <button class="edge-ad-btn buy" onclick="buyAdSlot(0)">Comprar</button>
+      </div>
+    </div>
+
+    <div class="edge-ad-box" id="edge-ad-2">
+      <div class="edge-ad-top">
+        <span class="edge-ad-label" id="ad-slot-1-tag">SERIE NOCTURNA</span>
+        <button class="edge-ad-close" onclick="closeEdgeAd('edge-ad-2')" title="Cerrar anuncio">X</button>
+      </div>
+      <div class="edge-ad-egg-wrap">
+        <div class="mini-egg-shell shell-cat" id="ad-slot-1-shell">
+          <div class="mini-egg-screen" id="ad-slot-1-code">NEKO</div>
+          <div class="mini-egg-buttons"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+      <div class="edge-ad-title" id="ad-slot-1-title">Neko Cosmic Velvet</div>
+      <div class="edge-ad-sub" id="ad-slot-1-sub">Diseño felino con orejas puntiagudas.</div>
+      <div class="edge-ad-price" id="ad-slot-1-price">165 CYBER-COINS</div>
+      <div class="edge-ad-btns">
+        <button class="edge-ad-btn try" onclick="tryAdSlot(1)">Probar</button>
+        <button class="edge-ad-btn buy" onclick="buyAdSlot(1)">Comprar</button>
+      </div>
+    </div>
+  </aside>
+
+  <aside class="edge-ad-rail right-rail" aria-label="Publicidades laterales derecha">
+    <div class="edge-ad-box" id="edge-ad-3">
+      <div class="edge-ad-top">
+        <span class="edge-ad-label" id="ad-slot-2-tag">COLECCIÓN DULCE</span>
+        <button class="edge-ad-close" onclick="closeEdgeAd('edge-ad-3')" title="Cerrar anuncio">X</button>
+      </div>
+      <div class="edge-ad-egg-wrap">
+        <div class="mini-egg-shell shell-bear" id="ad-slot-2-shell">
+          <div class="mini-egg-screen" id="ad-slot-2-code">KUMA</div>
+          <div class="mini-egg-buttons"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+      <div class="edge-ad-title" id="ad-slot-2-title">Kuma Cream Bear</div>
+      <div class="edge-ad-sub" id="ad-slot-2-sub">Carcasa crema con orejitas de oso.</div>
+      <div class="edge-ad-price" id="ad-slot-2-price">190 CYBER-COINS</div>
+      <div class="edge-ad-btns">
+        <button class="edge-ad-btn try" onclick="tryAdSlot(2)">Probar</button>
+        <button class="edge-ad-btn buy" onclick="buyAdSlot(2)">Comprar</button>
+      </div>
+    </div>
+
+    <div class="edge-ad-box" id="edge-ad-4">
+      <div class="edge-ad-top">
+        <span class="edge-ad-label" id="ad-slot-3-tag">EDICIÓN ARCADE</span>
+        <button class="edge-ad-close" onclick="closeEdgeAd('edge-ad-4')" title="Cerrar anuncio">X</button>
+      </div>
+      <div class="edge-ad-egg-wrap">
+        <div class="mini-egg-shell shell-frog" id="ad-slot-3-shell">
+          <div class="mini-egg-screen" id="ad-slot-3-code">FROG</div>
+          <div class="mini-egg-buttons"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+      <div class="edge-ad-title" id="ad-slot-3-title">Keroppi Retro Frog</div>
+      <div class="edge-ad-sub" id="ad-slot-3-sub">Carcasa estilo rana con ojos saltones.</div>
+      <div class="edge-ad-price" id="ad-slot-3-price">210 CYBER-COINS</div>
+      <div class="edge-ad-btns">
+        <button class="edge-ad-btn try" onclick="tryAdSlot(3)">Probar</button>
+        <button class="edge-ad-btn buy" onclick="buyAdSlot(3)">Comprar</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- BANNER INFERIOR -->
+  <div class="bottom-edge-banner" id="bottom-edge-banner">
+    <div class="mini-egg-shell shell-bunny" id="bottom-banner-shell" style="width:48px; height:58px; padding:6px 4px; flex-shrink:0;">
+      <div class="mini-egg-screen" id="bottom-banner-code" style="width:30px; height:22px; font-size:0.36rem;">BUNNY</div>
+      <div class="mini-egg-buttons"><span></span><span></span><span></span></div>
+    </div>
+    <div class="bottom-banner-info">
+      <div class="bottom-banner-tag" id="bottom-banner-tag">EDICIÓN ANIMAL • 1996</div>
+      <div class="bottom-banner-title" id="bottom-banner-title">Usagi Pastel Bunny</div>
+      <div class="bottom-banner-actions">
+        <button class="edge-ad-btn try" style="padding:3px 8px;" onclick="tryCurrentBottomBanner()">Probar Carcasa</button>
+        <button class="edge-ad-btn buy" style="padding:3px 8px;" onclick="buyCurrentBottomBanner()">Comprar</button>
+        <button class="edge-ad-btn try" style="padding:3px 7px;" onclick="rotateAllAds()" title="Rotar diseños">&gt;</button>
+      </div>
+    </div>
+    <button class="edge-ad-close" style="align-self:flex-start;" onclick="closeEdgeAd('bottom-edge-banner')" title="Cerrar anuncio">X</button>
+  </div>
+
+  <!-- MODALES -->
+  <!-- MODAL DE COMIDAS -->
+  <div class="loot-modal" id="food-modal">
+    <div class="loot-card" style="max-width: 420px; width: 92%;">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--accent-pink); padding-bottom:8px; margin-bottom:12px;">
+        <h2 style="font-family:var(--font-title); font-size:1.3rem; color:var(--bright-yellow); margin:0;">🍙 Menú Retro Café</h2>
+        <button onclick="closeFoodModal()" style="background:none; border:none; color:var(--bright-yellow); font-size:1.3rem;">✖</button>
+      </div>
+      <p style="font-size:0.95rem; color:var(--pastel-peach); margin-bottom:10px;">Elige un bocadillo para alimentar a tu mascota:</p>
+      <div class="food-grid-modal">
+        <button class="food-choice-card" onclick="feedPet('onigiri')">
+          <span style="font-size:2rem;">🍙</span>
+          <strong>Onigiri Clásico</strong>
+          <span style="font-size:0.8rem; color:var(--pastel-peach);">+25% Hambre • 5 Coins</span>
+        </button>
+        <button class="food-choice-card" onclick="feedPet('ramen')">
+          <span style="font-size:2rem;">🍜</span>
+          <strong>Ramen Caliente</strong>
+          <span style="font-size:0.8rem; color:var(--pastel-peach);">+45% Hambre • 10 Coins</span>
+        </button>
+        <button class="food-choice-card" onclick="feedPet('dango')">
+          <span style="font-size:2rem;">🍡</span>
+          <strong>Dango Dulce</strong>
+          <span style="font-size:0.8rem; color:var(--pastel-peach);">+25% Ánimo • 8 Coins</span>
+        </button>
+        <button class="food-choice-card" onclick="feedPet('cake')">
+          <span style="font-size:2rem;">🍰</span>
+          <strong>Pastel Estelar</strong>
+          <span style="font-size:0.8rem; color:var(--pastel-peach);">+40% Hambre • 15 Coins</span>
+        </button>
+      </div>
+      <button class="btn-primary btn-secondary-retro" style="margin-top:16px; width:100%;" onclick="closeFoodModal()">CANCELAR</button>
+    </div>
+  </div>
+
+  <!-- MODAL DE CONFIGURACIÓN POMODORO -->
+  <div class="loot-modal" id="settings-modal">
+    <div class="loot-card" style="max-width: 420px; width: 92%; text-align: left;">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--accent-pink); padding-bottom:8px; margin-bottom:14px;">
+        <h2 style="font-family:var(--font-title); font-size:1.3rem; color:var(--bright-yellow); margin:0;">⚙️ Ajustes Pomodoro</h2>
+        <button onclick="closeSettingsModal()" style="background:none; border:none; color:var(--bright-yellow); font-size:1.3rem;">✖</button>
+      </div>
+      <div class="settings-grid" style="margin-top:0; grid-template-columns: 1fr;">
+        <div class="setting-group">
+          <label for="input-study">Estudio (Minutos):</label>
+          <input type="number" id="input-study" value="25" min="1" max="120" onchange="updateCustomTimes()">
+        </div>
+        <div class="setting-group">
+          <label for="input-break">Descanso (Minutos):</label>
+          <input type="number" id="input-break" value="5" min="1" max="60" onchange="updateCustomTimes()">
+        </div>
+        <div class="setting-group">
+          <label for="select-ambient">Sonido Ambiente:</label>
+          <select id="select-ambient" onchange="changeAmbientSound(this.value)">
+            <option value="none">Ninguno</option>
+            <option value="rain">Lluvia Suave</option>
+            <option value="white">Ruido Blanco Focus</option>
+            <option value="waves">Olas Relajantes</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-primary" style="margin-top:16px; width:100%;" onclick="closeSettingsModal()">GUARDAR Y CERRAR</button>
+    </div>
+  </div>
+
+  <!-- MODAL DE ARMARIO VIRTUAL Y CARCASAS -->
+  <div class="loot-modal" id="wardrobe-modal">
+    <div class="loot-card" style="max-width: 440px; width: 92%;">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--accent-pink); padding-bottom:8px; margin-bottom:12px;">
+        <h2 style="font-family:var(--font-title); font-size:1.3rem; color:var(--bright-yellow); margin:0;">👗 Armario Virtual</h2>
+        <button onclick="closeWardrobeModal()" style="background:none; border:none; color:var(--bright-yellow); font-size:1.3rem;">✖</button>
+      </div>
+
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; padding:6px 10px; background:rgba(69,17,63,0.75); border-radius:10px; border:1px solid var(--pastel-peach);">
+        <span style="font-size:0.85rem; color:var(--bright-yellow); font-weight:600;">Color Accesorio:</span>
+        <div id="acc-color-swatches" style="display:flex; gap:6px;">
+          <button onclick="setAccessoryColor('default')" title="Original" style="width:18px; height:18px; border-radius:50%; background:linear-gradient(45deg,#FF49C2,#FACC15); border:2px solid #FFF;"></button>
+          <button onclick="setAccessoryColor('#00F5D4')" title="Turquesa Neón" style="width:18px; height:18px; border-radius:50%; background:#00F5D4; border:1px solid #FFF;"></button>
+          <button onclick="setAccessoryColor('#A855F7')" title="Amatista" style="width:18px; height:18px; border-radius:50%; background:#A855F7; border:1px solid #FFF;"></button>
+          <button onclick="setAccessoryColor('#FB923C')" title="Mandarina" style="width:18px; height:18px; border-radius:50%; background:#FB923C; border:1px solid #FFF;"></button>
+          <button onclick="setAccessoryColor('#38BDF8')" title="Zafiro" style="width:18px; height:18px; border-radius:50%; background:#38BDF8; border:1px solid #FFF;"></button>
+          <button onclick="setAccessoryColor('#F43F5E')" title="Rubí" style="width:18px; height:18px; border-radius:50%; background:#F43F5E; border:1px solid #FFF;"></button>
+        </div>
+      </div>
+
+      <div class="wardrobe-items" id="wardrobe-grid">
+        <button class="accessory-btn" onclick="equipAccessory('none')" title="Sin accesorio">❌</button>
+        <button class="accessory-btn" onclick="equipAccessory('bow')" title="Moño Mágico">🎀</button>
+        <button class="accessory-btn" onclick="equipAccessory('crown')" title="Corona Real">👑</button>
+        <button class="accessory-btn" onclick="equipAccessory('wizard')" title="Sombrero Mágico">🧙‍♂️</button>
+        <button class="accessory-btn" onclick="equipAccessory('headphones')" title="Auriculares Retro">🎧</button>
+        <button class="accessory-btn" onclick="equipAccessory('flower')" title="Flor Kawaii">🌸</button>
+        <button class="accessory-btn" onclick="equipAccessory('scholar')" title="Gorro Graduación">🎓</button>
+      </div>
+
+      <div style="text-align:left; margin-top:12px;">
+        <div style="display:flex; justify-content:space-between; font-size:0.9rem; color:var(--bright-yellow); font-weight:700;">
+          <span>Carcasas Adquiridas</span>
+          <span id="owned-shells-count" style="color:var(--pastel-peach);">1 desbloqueadas</span>
+        </div>
+        <div class="wardrobe-shells-drawer" id="wardrobe-shells-drawer"></div>
+      </div>
+
+      <button class="btn-primary" style="margin-top:16px; width:100%;" onclick="closeWardrobeModal()">LISTO</button>
+    </div>
+  </div>
+
+  <div class="loot-modal" id="promo-ad-modal">
+    <div class="loot-card" style="max-width: 440px;">
+      <div style="font-family:var(--font-pixel); font-size:0.62rem; color:var(--accent-pink); margin-bottom:8px;">SPOT COMERCIAL RETRO • EDICIÓN COLECCIONISTA</div>
+      <h2 style="font-family:var(--font-title); font-size:1.5rem; color:var(--bright-yellow);" id="promo-modal-title">Edición Especial</h2>
+      <p style="color:var(--pastel-peach); margin-top:10px; font-size:1.05rem;" id="promo-modal-desc">Descripción del modelo.</p>
+      
+      <div style="margin:18px 0; padding:12px; background:rgba(69, 17, 63, 0.9); border:2px dashed var(--bright-yellow); border-radius:12px;">
+        <div style="font-family:var(--font-pixel); font-size:0.72rem; color:var(--bright-yellow);" id="promo-modal-price">120 CYBER-COINS</div>
+        <div style="font-size:0.9rem; color:var(--pastel-peach); margin-top:6px;">Incluye manual ilustrado retro y cadena de bolsillo</div>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:16px;">
+        <button class="btn-primary" style="flex:1; font-size:0.95rem;" onclick="confirmSimulatedOrder()">SIMULAR COMPRA</button>
+        <button class="btn-primary" style="flex:1; font-size:0.95rem; background:var(--bg-dark); border-color:var(--pastel-peach);" onclick="closePromoAdModal()">CERRAR</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="loot-modal" id="loot-modal">
+    <div class="loot-card">
+      <h2 style="font-family:var(--font-title); color:var(--bright-yellow);">¡SESIÓN DE 4 CICLOS COMPLETADA!</h2>
+      <p style="color:var(--pastel-peach); margin-top:5px;">Completaste los 4 bloques de estudio y descanso en la biblioteca. Aquí tienes tu recompensa:</p>
+      
+      <div class="loot-icon" id="loot-icon-display">🎁</div>
+      <h3 style="font-family:var(--font-pixel); font-size:1rem; color:var(--bright-yellow);" id="loot-name-display">Caja Misteriosa</h3>
+      <p style="font-size:0.95rem; color:var(--pastel-peach); margin-top:8px;" id="loot-desc-display">Añadido a tu colección.</p>
+
+      <button class="btn-primary" style="margin-top:20px; width:100%;" onclick="closeLootModal()">RECLAMAR RECOMPENSA</button>
+    </div>
+  </div>
+
+  <button class="ai-fab" onclick="toggleManualModal()" title="Abrir Manual y Guía Detallada">📖</button>
+
+  <div class="loot-modal" id="manual-modal">
+    <div class="loot-card" style="max-width: 620px; width: 92%; max-height: 85vh; display: flex; flex-direction: column; text-align: left;">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--accent-pink); padding-bottom:10px; margin-bottom:15px;">
+        <h2 style="font-family:var(--font-title); font-size:1.3rem; color:var(--bright-yellow); margin:0;">📖 Manual Detallado: Pomodoro & Studygotchi</h2>
+        <button onclick="toggleManualModal()" style="background:none; border:none; color:var(--bright-yellow); font-size:1.4rem; cursor:pointer;">✖</button>
+      </div>
+
+      <div style="overflow-y:auto; flex:1; padding-right:5px; display:flex; flex-direction:column; gap:16px;">
+        <div>
+          <h3 style="font-family:var(--font-title); font-size:1.1rem; color:var(--bright-yellow); margin-bottom:6px;">⏱️ 1. Pomodoro, Lentes y Aliento</h3>
+          <p style="font-size:0.95rem; color:var(--pastel-peach); line-height:1.5;">Al pulsar <strong>INICIAR</strong>, tu mascota se pone sus lentes para estudiar en la biblioteca. Durante el estudio tu mascota es 100% inmune, y te enviará palabras de aliento continuas en pantalla para apoyarte. El botón de jugar (🎮) se deshabilita mientras estudias.</p>
+        </div>
+
+        <div>
+          <h3 style="font-family:var(--font-title); font-size:1.1rem; color:var(--bright-yellow); margin-bottom:6px;">🌳 2. Descanso y Salir al Patio</h3>
+          <p style="font-size:0.95rem; color:var(--pastel-peach); line-height:1.5;">Cuando el temporizador cambia a modo descanso, se activa el botón del patio (🌳) para que tu mascota salga a tomar aire fresco y recupere ánimo.</p>
+        </div>
+
+        <div>
+          <h3 style="font-family:var(--font-title); font-size:1.1rem; color:var(--bright-yellow); margin-bottom:6px;">💡 3. Enfermedad y Controles</h3>
+          <ul style="font-size:0.95rem; color:var(--pastel-peach); padding-left:20px; display:flex; flex-direction:column; gap:6px;">
+            <li><strong>Botón 🍙 (Comidas):</strong> Alimenta a tu mascota para subir su hambre y ayudar a curarla si está enferma.</li>
+            <li><strong>Botón 🎮 (Jugar):</strong> Eleva el ánimo (desactivado durante el estudio).</li>
+            <li><strong>Botón 🧹 (Limpiar):</strong> Barre la suciedad. Si la salud baja al 30% o menos, contraerá una enfermedad.</li>
+            <li><strong>Botón 💡 (Luz de la Casita):</strong> Apaga la luz para que duerma y recupere salud.</li>
+          </ul>
+        </div>
+      </div>
+
+      <button class="btn-primary" style="margin-top:20px; width:100%;" onclick="toggleManualModal()">¡ENTENDIDO!</button>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================
+       VARIABLES GLOBALES DE ESTADO Y POMODORO (4 CICLOS)
+       ========================================================= */
+    let studyMinutes = 25;
+    let breakMinutes = 5;
+    let secondsLeft = studyMinutes * 60;
+    let timerId = null;
+    let isRunning = false;
+    let isStudyMode = true;
+    let currentCycleCount = 1;
+
+    let petStats = {
+      health: 100,
+      hunger: 100,
+      happiness: 100,
+      dirtCount: 0,
+      isSleeping: false,
+      isSick: false,
+      isAtPatio: false,
+      isDead: false,
+      coins: 50,
+      age: 1,
+      experience: 0
+    };
+
+    let audioCtx = null;
+    let ambientSource = null;
+    let motivationInterval = null;
+
+    const motivationalQuotes = [
+      "¡Tú puedes con esto! Sigue adelante.",
+      "Cada minuto de esfuerzo vale oro.",
+      "No te rindas ahora, estás haciendo historia.",
+      "Un paso a la vez hacia tu gran meta.",
+      "¡El enfoque de hoy es tu éxito de mañana!",
+      "Respira hondo, lo estás haciendo excelente.",
+      "Tu esfuerzo actual dará grandes frutos.",
+      "¡Imparable! Sigue con ese ritmo increíble.",
+      "La constancia es la clave del triunfo.",
+      "¡Cree en ti! Estoy aquí acompañándote."
+    ];
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function playRetroClickSFX() {
+      initAudio();
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(650, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(320, audioCtx.currentTime + 0.05);
+      gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.05);
+    }
+
+    function playFeedSFX() {
+      initAudio();
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(250, audioCtx.currentTime);
+      osc.frequency.setValueAtTime(400, audioCtx.currentTime + 0.08);
+      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.15);
+    }
+
+    function playGameSFX() {
+      initAudio();
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+      osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.07);
+      gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.15);
+    }
+
+    function playVictoryFanfareSFX() {
+      initAudio();
+      if (!audioCtx) return;
+      const notes = [523.25, 659.25, 783.99, 1046.50];
+      notes.forEach((freq, index) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime + index * 0.12);
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime + index * 0.12);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + index * 0.12 + 0.18);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(audioCtx.currentTime + index * 0.12);
+        osc.stop(audioCtx.currentTime + index * 0.12 + 0.18);
+      });
+    }
+
+    document.addEventListener('click', (e) => {
+      if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A') {
+        playRetroClickSFX();
+      }
+    });
+
+    /* =========================================================
+       CANVAS Y RENDERIZADO DE MASCOTAS HÍBRIDAS ALIEN-ANIMAL
+       ========================================================= */
+    let currentPose = 'idle';
+    let currentAccessory = 'none';
+    let currentAccessoryColor = 'default';
+    let animFrame = 0;
+    let fiveMinReactionTimer = null;
+    let eatingState = { active: false, foodType: 'onigiri', step: 0 };
+    let hatchingState = { active: false, stage: 0, eggColors: ['#FF49C2', '#FFF7AD', '#5CE1E6'] };
+
+    const alienAnimalSpecies = [
+      {
+        name: 'Xeno-Bunny',
+        personality: 'Curioso',
+        bodyColor: '#FF6B9D',
+        altColor: '#4ECDC4',
+        accentColor: '#FFE66D',
+        eyeColor: '#1A051D',
+        type: 'bunny',
+        eggColors: ['#FF6B9D', '#4ECDC4', '#FFE66D']
+      },
+      {
+        name: 'Cosmic Neko',
+        personality: 'Juguetón',
+        bodyColor: '#9B5DE5',
+        altColor: '#FEE440',
+        accentColor: '#00BBF9',
+        eyeColor: '#1A051D',
+        type: 'cat',
+        eggColors: ['#9B5DE5', '#FEE440', '#00BBF9']
+      },
+      {
+        name: 'Cyber-Axolotl',
+        personality: 'Soñador',
+        bodyColor: '#FF85A1',
+        altColor: '#00F5D4',
+        accentColor: '#7209B7',
+        eyeColor: '#1A051D',
+        type: 'axolotl',
+        eggColors: ['#FF85A1', '#00F5D4', '#FFFFFF']
+      },
+      {
+        name: 'Star-Bear',
+        personality: 'Tranquilo',
+        bodyColor: '#F59E0B',
+        altColor: '#FEF08A',
+        accentColor: '#EC4899',
+        eyeColor: '#1A051D',
+        type: 'bear',
+        eggColors: ['#F59E0B', '#FEF08A', '#EC4899']
+      },
+      {
+        name: 'Neon-Dragonoid',
+        personality: 'Valiente',
+        bodyColor: '#0EA5E9',
+        altColor: '#F43F5E',
+        accentColor: '#A3E635',
+        eyeColor: '#1A051D',
+        type: 'dragon',
+        eggColors: ['#0EA5E9', '#F43F5E', '#A3E635']
+      },
+      {
+        name: 'Cyborg-Fox',
+        personality: 'Astuto',
+        bodyColor: '#F97316',
+        altColor: '#E0F2FE',
+        accentColor: '#6366F1',
+        eyeColor: '#1A051D',
+        type: 'fox',
+        eggColors: ['#F97316', '#E0F2FE', '#6366F1']
+      },
+      {
+        name: 'Plasma-Octo',
+        personality: 'Creación',
+        bodyColor: '#10B981',
+        altColor: '#F472B6',
+        accentColor: '#FDE047',
+        eyeColor: '#1A051D',
+        type: 'octo',
+        eggColors: ['#10B981', '#F472B6', '#FDE047']
+      },
+      {
+        name: 'Astro-Penguin',
+        personality: 'Elegante',
+        bodyColor: '#3B82F6',
+        altColor: '#FACC15',
+        accentColor: '#F8FAFC',
+        eyeColor: '#1A051D',
+        type: 'penguin',
+        eggColors: ['#3B82F6', '#F8FAFC', '#FACC15']
+      },
+      {
+        name: 'Crystal-Deer',
+        personality: 'Sereno',
+        bodyColor: '#C084FC',
+        altColor: '#67E8F9',
+        accentColor: '#FDE047',
+        eyeColor: '#1A051D',
+        type: 'deer',
+        eggColors: ['#C084FC', '#67E8F9', '#FDE047']
+      },
+      {
+        name: 'Solar-Owl',
+        personality: 'Sabio',
+        bodyColor: '#D97706',
+        altColor: '#38BDF8',
+        accentColor: '#FEF08A',
+        eyeColor: '#1A051D',
+        type: 'owl',
+        eggColors: ['#D97706', '#FEF08A', '#38BDF8']
+      }
+    ];
+
+    let currentPetSpecies = alienAnimalSpecies[0];
+
+    const canvas = document.getElementById('pet-canvas');
+    const ctx = canvas ? canvas.getContext('2d') : null;
+
+    function drawPixelBox(x, y, w, h, color) {
+      if (!ctx) return;
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, w, h);
+    }
+
+    function drawHouseLamp(isOn) {
+      drawPixelBox(53, 0, 2, 4, isOn ? '#6B1552' : '#45113F');
+      drawPixelBox(50, 4, 8, 2, '#FF49C2');
+      drawPixelBox(48, 6, 12, 3, isOn ? '#FFB4AF' : '#6B1552');
+      if (isOn) {
+        drawPixelBox(52, 9, 4, 3, '#FFF7AD');
+        drawPixelBox(51, 13, 2, 2, 'rgba(255, 247, 173, 0.7)');
+        drawPixelBox(55, 13, 2, 2, 'rgba(255, 247, 173, 0.7)');
+      } else {
+        drawPixelBox(52, 9, 4, 3, '#45113F');
+      }
+    }
+
+    function drawHatchingEggAnimation() {
+      drawPixelBox(0, 52, 64, 12, '#6B1552');
+      const [cMain, cSpot, cCrack] = hatchingState.eggColors;
+      const shakeX = (hatchingState.stage >= 2 && hatchingState.stage <= 5) ? ((animFrame % 2 === 0) ? -2 : 2) : 0;
+      const ex = 22 + shakeX;
+      const ey = 22;
+
+      if (hatchingState.stage < 6) {
+        drawPixelBox(ex + 5, ey, 10, 2, cMain);
+        drawPixelBox(ex + 3, ey + 2, 14, 4, cMain);
+        drawPixelBox(ex + 1, ey + 6, 18, 12, cMain);
+        drawPixelBox(ex + 3, ey + 18, 14, 4, cMain);
+        drawPixelBox(ex + 5, ey + 22, 10, 2, cMain);
+
+        drawPixelBox(ex + 4, ey + 7, 4, 4, cSpot);
+        drawPixelBox(ex + 12, ey + 13, 4, 4, cSpot);
+        drawPixelBox(ex + 7, ey + 17, 3, 3, cSpot);
+
+        if (hatchingState.stage >= 3) {
+          drawPixelBox(ex + 8, ey + 9, 2, 2, '#1A051D');
+          drawPixelBox(ex + 10, ey + 11, 2, 2, '#1A051D');
+          drawPixelBox(ex + 6, ey + 11, 2, 2, '#1A051D');
+        }
+        if (hatchingState.stage >= 5) {
+          drawPixelBox(ex + 2, ey + 10, 16, 2, '#1A051D');
+          drawPixelBox(ex + 12, ey + 8, 2, 2, cCrack);
+        }
+      } else {
+        drawPixelBox(14, 16, 36, 28, '#FFF7AD');
+        drawPixelBox(14, 38, 12, 8, cMain);
+        drawPixelBox(38, 38, 12, 8, cMain);
+        drawPixelBox(18, 12, 8, 4, cSpot);
+        drawPixelBox(38, 12, 8, 4, cSpot);
+      }
+    }
+
+    function drawFoodSprite(foodType, x, y, biteStep) {
+      if (biteStep >= 3) return;
+      if (foodType === 'onigiri') {
+        drawPixelBox(x + 2, y, 4, 2, '#FFFFFF');
+        drawPixelBox(x + 1, y + 2, 6, 3, '#FFFFFF');
+        if (biteStep < 2) drawPixelBox(x, y + 5, 8, 3, '#FFFFFF');
+        drawPixelBox(x + 2, y + 4, 4, 4, '#111827');
+      } else if (foodType === 'ramen') {
+        drawPixelBox(x, y + 4, 9, 4, '#DC2626');
+        drawPixelBox(x + 1, y + 8, 7, 1, '#FACC15');
+        if (biteStep < 2) {
+          drawPixelBox(x + 1, y + 2, 7, 2, '#FDE047');
+          drawPixelBox(x + 2, y + 1, 2, 2, '#16A34A');
+          drawPixelBox(x + 5, y + 1, 2, 2, '#F472B6');
+        }
+      } else if (foodType === 'dango') {
+        drawPixelBox(x + 4, y, 1, 10, '#92400E');
+        drawPixelBox(x + 2, y + 1, 5, 3, '#FF49C2');
+        if (biteStep < 1) drawPixelBox(x + 2, y + 4, 5, 3, '#FFFFFF');
+        if (biteStep < 2) drawPixelBox(x + 2, y + 7, 5, 3, '#22C55E');
+      } else if (foodType === 'cake') {
+        drawPixelBox(x, y + 3, 9, 5, '#FDE047');
+        drawPixelBox(x, y + 2, 9, 2, '#FFFFFF');
+        if (biteStep < 2) drawPixelBox(x, y + 5, 9, 1, '#FF49C2');
+        if (biteStep < 1) drawPixelBox(x + 3, y, 3, 2, '#EF4444');
+      }
+    }
+
+    function drawDirtPoops() {
+      const positions = [
+        { x: 6, y: 44 },
+        { x: 50, y: 44 },
+        { x: 14, y: 47 },
+        { x: 43, y: 47 }
+      ];
+      for (let i = 0; i < Math.min(petStats.dirtCount, 4); i++) {
+        const p = positions[i];
+        const wiggle = (animFrame % 2 === 0) ? 0 : 1;
+        drawPixelBox(p.x + 2, p.y, 4, 2, '#78350F');
+        drawPixelBox(p.x + 1, p.y + 2, 6, 2, '#92400E');
+        drawPixelBox(p.x, p.y + 4, 8, 3, '#451A03');
+        drawPixelBox(p.x + 2 + wiggle, p.y - 3, 1, 2, '#A3E635');
+        drawPixelBox(p.x + 5 - wiggle, p.y - 4, 1, 2, '#A3E635');
+      }
+    }
+
+    function renderPetAndRoom() {
+      if (!canvas || !ctx) return;
+      ctx.clearRect(0, 0, 64, 64);
+
+      if (hatchingState.active) {
+        drawHatchingEggAnimation();
+        animFrame++;
+        return;
+      }
+
+      const bounce = (animFrame % 2 === 0) ? 0 : 1;
+
+      const bodyColor = currentPetSpecies.bodyColor;
+      const cheekColor = currentPetSpecies.altColor;
+      const accentColor = currentPetSpecies.accentColor || '#FFF7AD';
+      const eyeColor = currentPetSpecies.eyeColor;
+      const brightYellow = '#FFF7AD';
+      const primaryDark = '#1A051D';
+
+      if (petStats.isDead) {
+        drawPixelBox(0, 52, 64, 12, '#45113F');
+        const floatY = 20 - bounce * 2;
+        drawPixelBox(24, floatY, 16, 14, '#E2E8F0');
+        drawPixelBox(22, floatY + 4, 20, 10, '#E2E8F0');
+        drawPixelBox(26, floatY + 5, 3, 3, '#0F172A');
+        drawPixelBox(35, floatY + 5, 3, 3, '#0F172A');
+        drawPixelBox(30, floatY + 10, 4, 3, '#0F172A');
+        drawPixelBox(26, floatY - 4, 12, 2, '#FACC15');
+        ctx.fillStyle = '#FF49C2';
+        ctx.font = '6px "Press Start 2P"';
+        ctx.fillText('R.I.P', 18, 48);
+        animFrame++;
+        return;
+      }
+
+      if (petStats.isSleeping) {
+        drawPixelBox(0, 52, 64, 12, '#2E0927');
+        drawPixelBox(6, 10, 12, 12, '#2a0a27');
+        drawPixelBox(7, 11, 10, 10, '#45113F');
+        drawPixelBox(11, 13, 3, 4, '#FFF7AD');
+        drawPixelBox(10, 14, 2, 2, '#FFF7AD');
+
+        drawHouseLamp(false);
+
+        drawPixelBox(14, 46, 36, 6, '#45113F');
+        drawPixelBox(15, 39, 10, 7, '#FFB4AF');
+
+        const breath = (animFrame % 2 === 0) ? 0 : 1;
+        drawPixelBox(22, 34 + breath, 22, 12 - breath, bodyColor);
+        drawPixelBox(25, 38 + breath, 4, 1, '#FFF7AD');
+        drawPixelBox(34, 38 + breath, 4, 1, '#FFF7AD');
+        drawPixelBox(26, 41, 22, 6, '#FF49C2');
+        drawPixelBox(26, 41, 22, 2, '#FFF7AD');
+
+        const floatStep = animFrame % 4;
+        ctx.fillStyle = '#FFF7AD';
+        ctx.font = '7px "Press Start 2P"';
+        ctx.fillText('z', 38 + (floatStep % 2), 30 - floatStep * 2);
+        ctx.fillText('Z', 44 - (floatStep % 2), 23 - floatStep * 2);
+        if (floatStep >= 2) {
+          ctx.fillText('z', 49, 16 - floatStep);
+        }
+
+        animFrame++;
+        return;
+      }
+
+      if (petStats.isAtPatio) {
+        drawPixelBox(0, 0, 64, 64, '#15803D');
+        drawPixelBox(0, 0, 64, 18, '#38BDF8');
+        drawPixelBox(10, 4, 12, 6, '#FFFFFF');
+        drawPixelBox(42, 6, 10, 5, '#FFFFFF');
+        drawPixelBox(52, 36, 8, 16, '#78350F');
+        drawPixelBox(46, 24, 20, 14, '#166534');
+      }
+
+      const scaleW = petStats.age === 1 ? 12 : (petStats.age === 2 ? 16 : (petStats.age === 3 ? 20 : 24));
+      const scaleH = petStats.age === 1 ? 12 : (petStats.age === 2 ? 15 : (petStats.age === 3 ? 17 : 18));
+      const headX = 32 - Math.floor(scaleW / 2);
+      const baseTop = petStats.age >= 3 ? 22 : (petStats.age === 2 ? 25 : 28);
+      const headY = (isRunning && isStudyMode) ? (baseTop - 3 - bounce) : (baseTop - bounce);
+
+      if (isRunning && isStudyMode && !eatingState.active) {
+        drawPixelBox(0, 0, 64, 64, '#45113F');
+        drawPixelBox(2, 6, 16, 46, '#6B1552');
+        drawPixelBox(46, 6, 16, 46, '#6B1552');
+        
+        drawPixelBox(4, 12, 12, 3, brightYellow);
+        drawPixelBox(4, 22, 12, 3, bodyColor);
+        drawPixelBox(4, 32, 12, 3, cheekColor);
+        drawPixelBox(48, 12, 12, 3, cheekColor);
+        drawPixelBox(48, 22, 12, 3, brightYellow);
+        drawPixelBox(48, 32, 12, 3, bodyColor);
+
+        drawPixelBox(16, 42, 32, 12, '#6B1552');
+        drawPixelBox(18, 34, 14, 8, brightYellow);
+        drawPixelBox(20, 36, 10, 4, bodyColor);
+
+        drawPixelBox(headX, headY, scaleW, scaleH, bodyColor);
+
+        if (currentPose === 'library_yawn') {
+          drawPixelBox(headX + 3, headY + 4, 3, 1, eyeColor);
+          drawPixelBox(headX + scaleW - 6, headY + 4, 3, 1, eyeColor);
+          drawPixelBox(headX + Math.floor(scaleW/2) - 2, headY + 8, 4, 4, eyeColor);
+
+          ctx.fillStyle = brightYellow;
+          ctx.font = '8px "Press Start 2P"';
+          ctx.fillText('Zzz', 42, 20 - (animFrame % 3) * 2);
+        } else if (currentPose === 'library_sip') {
+          drawPixelBox(headX + 3, headY + 4, 2, 3, eyeColor);
+          drawPixelBox(headX + scaleW - 5, headY + 4, 2, 3, eyeColor);
+          drawPixelBox(headX + scaleW, headY + 6, 6, 6, brightYellow);
+        } else {
+          drawPixelBox(headX + 3, headY + 4, 2, 3, eyeColor);
+          drawPixelBox(headX + scaleW - 5, headY + 4, 2, 3, eyeColor);
+          drawPixelBox(headX + Math.floor(scaleW/2) - 2, headY + 8, 4, 2, eyeColor);
+        }
+
+        // Lentes de estudio obligatorios
+        drawPixelBox(headX + 1, headY + 2, 5, 4, '#090D16');
+        drawPixelBox(headX + 2, headY + 3, 3, 2, '#38BDF8');
+        drawPixelBox(headX + scaleW - 6, headY + 2, 5, 4, '#090D16');
+        drawPixelBox(headX + scaleW - 5, headY + 3, 3, 2, '#38BDF8');
+        drawPixelBox(headX + 6, headY + 3, scaleW - 12, 1, '#090D16');
+
+      } else {
+        if (!petStats.isAtPatio) {
+          drawPixelBox(0, 52, 64, 12, '#6B1552');
+          drawHouseLamp(true);
+        }
+
+        if (petStats.age === 2) {
+          drawPixelBox(headX + 2, headY + scaleH, 4, 4, bodyColor);
+          drawPixelBox(headX + scaleW - 6, headY + scaleH, 4, 4, bodyColor);
+        } else if (petStats.age === 3) {
+          drawPixelBox(headX + 2, headY + scaleH, scaleW - 4, 6, bodyColor);
+          drawPixelBox(headX + 5, headY + scaleH + 1, scaleW - 10, 4, accentColor);
+          drawPixelBox(headX + 3, headY + scaleH + 6, 4, 3, cheekColor);
+          drawPixelBox(headX + scaleW - 7, headY + scaleH + 6, 4, 3, cheekColor);
+        } else if (petStats.age === 4) {
+          drawPixelBox(headX + 1, headY + scaleH, scaleW - 2, 8, bodyColor);
+          drawPixelBox(headX + 4, headY + scaleH + 1, scaleW - 8, 6, accentColor);
+          drawPixelBox(headX - 3, headY + scaleH + 1, 4, 5, cheekColor);
+          drawPixelBox(headX + scaleW - 1, headY + scaleH + 1, 4, 5, cheekColor);
+          drawPixelBox(headX + 3, headY + scaleH + 8, 5, 4, cheekColor);
+          drawPixelBox(headX + scaleW - 8, headY + scaleH + 8, 5, 4, cheekColor);
+          drawPixelBox(headX + scaleW + 1, headY + scaleH - 2, 5, 5, accentColor);
+        }
+
+        drawPixelBox(headX, headY, scaleW, scaleH, bodyColor);
+
+        if (eatingState.active) {
+          drawPixelBox(headX + 3, headY + 3, 3, 2, eyeColor);
+          drawPixelBox(headX + scaleW - 6, headY + 3, 3, 2, eyeColor);
+          const mouthOpen = (animFrame % 2 === 0);
+          if (mouthOpen) {
+            drawPixelBox(headX + Math.floor(scaleW/2) - 3, headY + 8, 6, 4, '#DC2626');
+          } else {
+            drawPixelBox(headX + Math.floor(scaleW/2) - 2, headY + 9, 4, 2, eyeColor);
+          }
+          drawFoodSprite(eatingState.foodType, headX + scaleW + 3, headY + 6, eatingState.step);
+        } else if (petStats.isSick) {
+          drawPixelBox(headX + 2, headY + 4, 2, 2, '#EF4444');
+          drawPixelBox(headX + 4, headY + 4, 2, 2, '#EF4444');
+          drawPixelBox(headX + scaleW - 6, headY + 4, 2, 2, '#EF4444');
+          drawPixelBox(headX + scaleW - 4, headY + 4, 2, 2, '#EF4444');
+          drawPixelBox(headX + Math.floor(scaleW/2) - 2, headY + 9, 4, 2, '#EF4444');
+          drawPixelBox(headX + scaleW + 2, headY + 2, 2, 6, '#FFFFFF');
+          drawPixelBox(headX + scaleW + 2, headY + 7, 2, 2, '#EF4444');
+        } else if (petStats.hunger <= 20 || petStats.happiness <= 20 || petStats.health <= 30) {
+          drawPixelBox(headX + 3, headY + 5, 3, 2, eyeColor);
+          drawPixelBox(headX + scaleW - 6, headY + 5, 3, 2, eyeColor);
+          drawPixelBox(headX + Math.floor(scaleW/2) - 2, headY + 10, 4, 1, eyeColor);
+        } else {
+          drawPixelBox(headX + 3, headY + 4, 3, 3, eyeColor);
+          drawPixelBox(headX + scaleW - 6, headY + 4, 3, 3, eyeColor);
+          if (currentPetSpecies.personality === 'Valiente' || currentPetSpecies.personality === 'Astuto') {
+            drawPixelBox(headX + 3, headY + 3, 3, 1, accentColor);
+            drawPixelBox(headX + scaleW - 6, headY + 3, 3, 1, accentColor);
+          }
+          drawPixelBox(headX + Math.floor(scaleW/2) - 2, headY + 9, 4, 2, eyeColor);
+        }
+      }
+
+      const centerX = headX + Math.floor(scaleW / 2);
+      const earBoost = petStats.age >= 3 ? 2 : 0;
+      if (currentPetSpecies.type === 'bunny') {
+        drawPixelBox(centerX - 6, headY - 8 - earBoost, 3, 8 + earBoost, cheekColor);
+        drawPixelBox(centerX + 3, headY - 8 - earBoost, 3, 8 + earBoost, cheekColor);
+      } else if (currentPetSpecies.type === 'cat') {
+        drawPixelBox(centerX - 7, headY - 5 - earBoost, 4, 5 + earBoost, cheekColor);
+        drawPixelBox(centerX + 3, headY - 5 - earBoost, 4, 5 + earBoost, cheekColor);
+      } else if (currentPetSpecies.type === 'axolotl') {
+        drawPixelBox(centerX - 9 - earBoost, headY + 2, 4 + earBoost, 3, cheekColor);
+        drawPixelBox(centerX + 5, headY + 2, 4 + earBoost, 3, cheekColor);
+      } else if (currentPetSpecies.type === 'bear') {
+        drawPixelBox(centerX - 7, headY - 4 - earBoost, 4 + earBoost, 4 + earBoost, cheekColor);
+        drawPixelBox(centerX + 3, headY - 4 - earBoost, 4 + earBoost, 4 + earBoost, cheekColor);
+      } else if (currentPetSpecies.type === 'dragon') {
+        drawPixelBox(centerX - 6, headY - 6 - earBoost, 2, 6 + earBoost, cheekColor);
+        drawPixelBox(centerX + 4, headY - 6 - earBoost, 2, 6 + earBoost, cheekColor);
+        if (petStats.age >= 3) {
+          drawPixelBox(headX - 4, headY + 4, 4, 6, accentColor);
+          drawPixelBox(headX + scaleW, headY + 4, 4, 6, accentColor);
+        }
+      } else if (currentPetSpecies.type === 'fox') {
+        drawPixelBox(centerX - 8, headY - 6 - earBoost, 5, 6 + earBoost, cheekColor);
+        drawPixelBox(centerX + 3, headY - 6 - earBoost, 5, 6 + earBoost, cheekColor);
+        drawPixelBox(centerX - 2, headY + 7, 4, 3, cheekColor);
+      } else if (currentPetSpecies.type === 'octo') {
+        drawPixelBox(headX - 2, headY + scaleH - 2, 3, 4 + earBoost, cheekColor);
+        drawPixelBox(centerX - 1, headY + scaleH - 2, 3, 4 + earBoost, cheekColor);
+        drawPixelBox(headX + scaleW - 1, headY + scaleH - 2, 3, 4 + earBoost, cheekColor);
+      } else if (currentPetSpecies.type === 'penguin') {
+        drawPixelBox(centerX - 2, headY + 6, 4, 3, cheekColor);
+        drawPixelBox(headX - 2, headY + 4, 2, 6 + earBoost, cheekColor);
+        drawPixelBox(headX + scaleW, headY + 4, 2, 6 + earBoost, cheekColor);
+      } else if (currentPetSpecies.type === 'deer') {
+        drawPixelBox(centerX - 6, headY - 7 - earBoost, 2, 7 + earBoost, accentColor);
+        drawPixelBox(centerX + 4, headY - 7 - earBoost, 2, 7 + earBoost, accentColor);
+        drawPixelBox(centerX - 8, headY - 5 - earBoost, 2, 2, cheekColor);
+        drawPixelBox(centerX + 6, headY - 5 - earBoost, 2, 2, cheekColor);
+      } else if (currentPetSpecies.type === 'owl') {
+        drawPixelBox(centerX - 7, headY - 4 - earBoost, 3, 4 + earBoost, accentColor);
+        drawPixelBox(centerX + 4, headY - 4 - earBoost, 3, 4 + earBoost, accentColor);
+        drawPixelBox(centerX - 1, headY + 6, 2, 3, cheekColor);
+      }
+
+      const tint = currentAccessoryColor !== 'default' ? currentAccessoryColor : null;
+      if (currentAccessory === 'bow' && (!isRunning || !isStudyMode)) {
+        drawPixelBox(centerX - 5, headY - 4, 4, 4, tint || '#E11D48');
+        drawPixelBox(centerX + 1, headY - 4, 4, 4, tint || '#E11D48');
+        drawPixelBox(centerX - 1, headY - 3, 2, 2, '#FACC15');
+      } else if (currentAccessory === 'crown' && (!isRunning || !isStudyMode)) {
+        drawPixelBox(centerX - 6, headY - 4, 12, 2, tint || '#F59E0B');
+        drawPixelBox(centerX - 6, headY - 7, 2, 3, tint || '#FACC15');
+        drawPixelBox(centerX - 1, headY - 8, 2, 4, tint || '#FACC15');
+        drawPixelBox(centerX + 4, headY - 7, 2, 3, tint || '#FACC15');
+      } else if (currentAccessory === 'wizard' && (!isRunning || !isStudyMode)) {
+        drawPixelBox(centerX - 8, headY - 2, 16, 2, tint || '#1E1B4B');
+        drawPixelBox(centerX - 5, headY - 6, 10, 4, tint || '#312E81');
+        drawPixelBox(centerX - 2, headY - 10, 4, 4, tint || '#312E81');
+        drawPixelBox(centerX - 1, headY - 5, 2, 2, '#FACC15');
+      } else if (currentAccessory === 'headphones' && (!isRunning || !isStudyMode)) {
+        drawPixelBox(headX - 3, headY + 1, 3, 8, tint || '#DC2626');
+        drawPixelBox(headX + scaleW, headY + 1, 3, 8, tint || '#DC2626');
+        drawPixelBox(headX, headY - 2, scaleW, 2, '#0F172A');
+      } else if (currentAccessory === 'flower' && (!isRunning || !isStudyMode)) {
+        drawPixelBox(headX + scaleW - 4, headY - 4, 5, 5, tint || '#F43F5E');
+        drawPixelBox(headX + scaleW - 3, headY - 3, 3, 3, '#FACC15');
+      } else if (currentAccessory === 'scholar' && (!isRunning || !isStudyMode)) {
+        drawPixelBox(centerX - 8, headY - 3, 16, 2, tint || '#090D16');
+        drawPixelBox(centerX - 4, headY - 5, 8, 2, tint || '#1E293B');
+        drawPixelBox(centerX + 6, headY - 1, 1, 5, '#FACC15');
+      }
+
+      if (petStats.dirtCount > 0 && !petStats.isAtPatio) {
+        drawDirtPoops();
+      }
+
+      animFrame++;
+    }
+
+    setInterval(renderPetAndRoom, 350);
+
+    function hatchNewPetEgg() {
+      if (hatchingState.active) return;
+      playRetroClickSFX();
+
+      let randIdx = Math.floor(Math.random() * alienAnimalSpecies.length);
+      if (alienAnimalSpecies[randIdx].name === currentPetSpecies.name && alienAnimalSpecies.length > 1) {
+        randIdx = (randIdx + 1) % alienAnimalSpecies.length;
+      }
+      const nextSpecies = alienAnimalSpecies[randIdx];
+
+      hatchingState = {
+        active: true,
+        stage: 0,
+        eggColors: nextSpecies.eggColors || ['#FF49C2', '#FFF7AD', '#5CE1E6']
+      };
+
+      const screen = document.getElementById('lcd-screen');
+      if (screen) screen.classList.remove('lights-off');
+
+      const msg = document.getElementById('pet-msg');
+      if (msg) msg.textContent = '🥚 ¡Un huevo misterioso apareció en pantalla!';
+
+      const hatchInterval = setInterval(() => {
+        hatchingState.stage++;
+        if (hatchingState.stage === 2 && msg) {
+          msg.textContent = '🥚 ¡El huevo empieza a temblar...!';
+          playRetroClickSFX();
+        } else if (hatchingState.stage === 4 && msg) {
+          msg.textContent = '💥 ¡Se está agrietando el cascarón!';
+          playFeedSFX();
+        } else if (hatchingState.stage >= 7) {
+          clearInterval(hatchInterval);
+          hatchingState.active = false;
+
+          currentPetSpecies = nextSpecies;
+          petStats.health = 100;
+          petStats.hunger = 100;
+          petStats.happiness = 100;
+          petStats.dirtCount = 0;
+          petStats.isSleeping = false;
+          petStats.isSick = false;
+          petStats.isAtPatio = false;
+          petStats.isDead = false;
+          petStats.age = 1;
+          petStats.experience = 0;
+
+          playVictoryFanfareSFX();
+          updatePetUI();
+          renderPetAndRoom();
+          if (msg) {
+            msg.textContent = `✨ ¡Nació ${currentPetSpecies.name} (${currentPetSpecies.personality})!`;
+          }
+        }
+        renderPetAndRoom();
+      }, 420);
+    }
+
+    function setAccessoryColor(colorHex) {
+      playRetroClickSFX();
+      currentAccessoryColor = colorHex;
+      renderPetAndRoom();
+      const msg = document.getElementById('pet-msg');
+      if (msg) msg.textContent = 'Color del accesorio actualizado.';
+    }
+
+    let unlockedLimitedAccessories = [];
+
+    const limitedAccessoriesPool = [
+      { key: 'limited_beret_mint', name: 'Boina Menta Pastel', icon: '🧢', desc: 'Accesorio limitado color menta suave.' },
+      { key: 'limited_halo_cyan', name: 'Aureola Celeste', icon: '😇', desc: 'Accesorio limitado celeste luminoso.' },
+      { key: 'limited_horns_violet', name: 'Cuernitos Violeta', icon: '😈', desc: 'Accesorio limitado violeta galáctico.' },
+      { key: 'limited_sprout_lime', name: 'Brote Verde Lima', icon: '🌱', desc: 'Accesorio limitado verde lima kawaii.' },
+      { key: 'limited_visor_coral', name: 'Visor Coral Cian', icon: '🥽', desc: 'Accesorio limitado coral y cian retro.' }
+    ];
+
+    function unlockLimitedAccessory(accObj) {
+      if (!unlockedLimitedAccessories.some(a => a.key === accObj.key)) {
+        unlockedLimitedAccessories.push(accObj);
+        const grid = document.getElementById('wardrobe-grid');
+        if (grid) {
+          const btn = document.createElement('button');
+          btn.className = 'accessory-btn';
+          btn.style.borderColor = '#FFF7AD';
+          btn.title = `${accObj.name} (Edición Limitada)`;
+          btn.textContent = accObj.icon;
+          btn.onclick = () => equipAccessory(accObj.key);
+          grid.appendChild(btn);
+        }
+      }
+      equipAccessory(accObj.key);
+    }
+
+    function equipAccessory(type) {
+      playRetroClickSFX();
+      currentAccessory = type;
+      const names = {
+        none: 'Sin accesorios equipados.',
+        bow: 'Moño Mágico de Neón equipado.',
+        crown: 'Corona Real equipada.',
+        wizard: 'Sombrero de Mago equipado.',
+        headphones: 'Auriculares Retro equipados.',
+        flower: 'Flor Kawaii equipada.',
+        scholar: 'Gorro de Graduación equipado.'
+      };
+      const msg = document.getElementById('pet-msg');
+      if (msg) msg.textContent = names[type] || 'Accesorio equipado.';
+      
+      document.querySelectorAll('.accessory-btn').forEach(btn => {
+        btn.classList.remove('equipped');
+        if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(`'${type}'`)) {
+          btn.classList.add('equipped');
+        }
+      });
+      renderPetAndRoom();
+      saveGameData();
+    }
+
+    function triggerFiveMinReaction() {
+      if (!isRunning || !isStudyMode) return;
+
+      const reactions = ['library_yawn', 'library_sip'];
+      const chosen = reactions[Math.floor(Math.random() * reactions.length)];
+      currentPose = chosen;
+
+      const msg = document.getElementById('pet-msg');
+      if (msg) {
+        if (chosen === 'library_yawn') {
+          msg.textContent = `${currentPetSpecies.name} bosteza y ajusta sus lentes...`;
+        } else {
+          msg.textContent = `${currentPetSpecies.name} toma un sorbo de té para enfocarse...`;
+        }
+      }
+
+      setTimeout(() => {
+        if (isRunning && isStudyMode) {
+          currentPose = 'library_study';
+          if (msg) msg.textContent = 'Concentrado estudiando en la biblioteca con sus lentes...';
+        }
+      }, 5000);
+    }
+
+    function startDynamicPomodoroPoses() {
+      currentPose = 'library_study';
+      const msg = document.getElementById('pet-msg');
+      if (msg) msg.textContent = `💪 ${motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)]}`;
+
+      if (fiveMinReactionTimer) clearInterval(fiveMinReactionTimer);
+      if (motivationInterval) clearInterval(motivationInterval);
+
+      fiveMinReactionTimer = setInterval(() => {
+        triggerFiveMinReaction();
+      }, 300000);
+
+      // Frases de aliento cada 15 segundos durante el estudio
+      motivationInterval = setInterval(() => {
+        if (isRunning && isStudyMode) {
+          const quote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+          const mEl = document.getElementById('pet-msg');
+          if (mEl) mEl.textContent = `💬 "${quote}"`;
+        }
+      }, 15000);
+    }
+
+    function stopDynamicPomodoroPoses() {
+      if (fiveMinReactionTimer) clearInterval(fiveMinReactionTimer);
+      if (motivationInterval) clearInterval(motivationInterval);
+      if (isStudyMode) {
+        currentPose = 'idle';
+        const msg = document.getElementById('pet-msg');
+        if (msg) msg.textContent = `${currentPetSpecies.name} está listo para estudiar.`;
+      }
+    }
+
+    /* =========================================================
+       RECOMPENSAS DE UNBOXING Y MONEDAS POR SESIÓN (4 CICLOS)
+       ========================================================= */
+    let unlimitedShellCounter = 0;
+
+    const unlimitedShellShapes = [
+      { shapeName: 'Estrella Fugaz', earClass: 'ear-star', bg: 'linear-gradient(155deg, #FF49C2, #6B1552 85%)', border: '#FFF7AD' },
+      { shapeName: 'Alas Celestiales', earClass: 'ear-angel', bg: 'linear-gradient(155deg, #FFF7AD, #FFB4AF 85%)', border: '#FF49C2' },
+      { shapeName: 'Diablillo Neón', earClass: 'ear-devil', bg: 'linear-gradient(155deg, #45113F, #FF49C2 88%)', border: '#FFF7AD' },
+      { shapeName: 'Osito Panda', earClass: 'ear-panda', bg: 'linear-gradient(155deg, #FFB4AF, #45113F 90%)', border: '#FFF7AD' },
+      { shapeName: 'Corona Imperial', earClass: 'ear-crown', bg: 'linear-gradient(155deg, #6B1552, #FF49C2 85%)', border: '#FFF7AD' },
+      { shapeName: 'Conejito Lunar', earClass: 'ear-bunny', bg: 'linear-gradient(155deg, #FF49C2, #45113F 88%)', border: '#FFB4AF' },
+      { shapeName: 'Gatito Astral', earClass: 'ear-cat', bg: 'linear-gradient(155deg, #6B1552, #45113F 90%)', border: '#FF49C2' },
+      { shapeName: 'Dragón Solar', earClass: 'ear-dragon', bg: 'linear-gradient(155deg, #FFB4AF, #FF49C2 85%)', border: '#FFF7AD' },
+      { shapeName: 'Ajolote Cósmico', earClass: 'ear-axolotl', bg: 'linear-gradient(155deg, #45113F, #6B1552 88%)', border: '#FFB4AF' }
+    ];
+
+    function generateUnlimitedShellGift() {
+      unlimitedShellCounter++;
+      const tpl = unlimitedShellShapes[(unlimitedShellCounter - 1) % unlimitedShellShapes.length];
+      const themeId = `custom_shell_${unlimitedShellCounter}`;
+      const fullTitle = `${tpl.shapeName} #${unlimitedShellCounter}`;
+
+      const newShellEntry = {
+        theme: themeId,
+        earClass: tpl.earClass,
+        code: `EX-${unlimitedShellCounter}`,
+        tag: 'CARCASA ILIMITADA',
+        title: fullTitle,
+        shortSub: `Forma especial ${tpl.shapeName}.`,
+        desc: `Carcasa exclusiva desbloqueada por completar una sesión de 4 ciclos.`,
+        price: 'REGALO DE SESIÓN',
+        customBg: tpl.bg,
+        customBorder: tpl.border
+      };
+
+      edgeAdCatalog.push(newShellEntry);
+      addShellToWardrobe(themeId);
+      applyShellTheme(newShellEntry);
+      return newShellEntry;
+    }
+
+    function triggerSurpriseLoot() {
+      const remainingLimited = limitedAccessoriesPool.filter(
+        acc => !unlockedLimitedAccessories.some(u => u.key === acc.key)
+      );
+
+      const randRoll = Math.random();
+      const giveAccessory = remainingLimited.length > 0 && randRoll < 0.35;
+      const giveCoins = !giveAccessory && randRoll < 0.70;
+
+      if (giveAccessory) {
+        const chosenAcc = remainingLimited[Math.floor(Math.random() * remainingLimited.length)];
+        unlockLimitedAccessory(chosenAcc);
+
+        document.getElementById('loot-icon-display').textContent = chosenAcc.icon;
+        document.getElementById('loot-name-display').textContent = `${chosenAcc.name} (Limitado)`;
+        document.getElementById('loot-desc-display').textContent = `${chosenAcc.desc} Quedan ${remainingLimited.length - 1} accesorios limitados por descubrir.`;
+      } else if (giveCoins) {
+        const bonusCoins = 100 + Math.floor(Math.random() * 51);
+        petStats.coins += bonusCoins;
+        updatePetUI();
+
+        document.getElementById('loot-icon-display').textContent = '🪙';
+        document.getElementById('loot-name-display').textContent = `¡Recompensa de sesión: +${bonusCoins} Cyber-Coins!`;
+        document.getElementById('loot-desc-display').textContent = 'Monedas añadidas a tu saldo por terminar los 4 ciclos.';
+      } else {
+        const newShell = generateUnlimitedShellGift();
+        document.getElementById('loot-icon-display').textContent = '🥚';
+        document.getElementById('loot-name-display').textContent = `Carcasa de Sesión: ${newShell.title}`;
+        document.getElementById('loot-desc-display').textContent = 'Carcasa ilimitada añadida a tu Armario Virtual y aplicada a la consola.';
+      }
+
+      document.getElementById('loot-modal').classList.add('active');
+    }
+
+    function closeLootModal() {
+      playRetroClickSFX();
+      document.getElementById('loot-modal').classList.remove('active');
+    }
+
+    /* =========================================================
+       CATÁLOGO Y PUBLICIDADES
+       ========================================================= */
+    let selectedPromoModel = '';
+    const edgeAdCatalog = [
+      {
+        theme: 'bunny',
+        earClass: 'ear-bunny',
+        code: 'BUNNY',
+        tag: 'EDICIÓN ANIMAL',
+        title: 'Usagi Pastel Bunny',
+        shortSub: 'Carcasa con orejas largas de conejo.',
+        desc: 'Diseño especial con orejas de conejo en tono durazno pastel y acabados luminosos.',
+        price: '140 CYBER-COINS'
+      },
+      {
+        theme: 'cat',
+        earClass: 'ear-cat',
+        code: 'NEKO',
+        tag: 'SERIE NOCTURNA',
+        title: 'Neko Cosmic Velvet',
+        shortSub: 'Diseño felino con orejas puntiagudas.',
+        desc: 'Carcasa felina en tonos púrpura profundo y neón inspirada en los gatos de la suerte.',
+        price: '165 CYBER-COINS'
+      },
+      {
+        theme: 'bear',
+        earClass: 'ear-bear',
+        code: 'KUMA',
+        tag: 'COLECCIÓN DULCE',
+        title: 'Kuma Cream Bear',
+        shortSub: 'Carcasa crema con orejitas de oso.',
+        desc: 'Edición suave color crema y durazno con orejas redondeadas de osito clásico.',
+        price: '190 CYBER-COINS'
+      },
+      {
+        theme: 'frog',
+        earClass: 'ear-frog',
+        code: 'FROG',
+        tag: 'EDICIÓN ARCADE',
+        title: 'Keroppi Retro Frog',
+        shortSub: 'Carcasa estilo rana con ojos saltones.',
+        desc: 'Silueta divertida con ojos superiores estilo rana arcade de los salones de Tokio.',
+        price: '210 CYBER-COINS'
+      },
+      {
+        theme: 'dragon',
+        earClass: 'ear-dragon',
+        code: 'DRAGO',
+        tag: 'EDICIÓN MÍSTICA',
+        title: 'Ryu Neon Dragon',
+        shortSub: 'Cuernos místicos y brillo magenta.',
+        desc: 'Carcasa legendaria con cuernos estilizados y acabado magenta eléctrico.',
+        price: '250 CYBER-COINS'
+      },
+      {
+        theme: 'axolotl',
+        earClass: 'ear-axolotl',
+        code: 'AXOL',
+        tag: 'SERIE ACUÁTICA',
+        title: 'Axolotl Kawaii Pink',
+        shortSub: 'Branquias laterales estilo ajolote.',
+        desc: 'Diseño único con branquias laterales en relieve inspiradas en el ajolote rosado.',
+        price: '230 CYBER-COINS'
+      },
+      {
+        theme: 'crystal',
+        earClass: '',
+        code: 'STUDY',
+        tag: 'CLÁSICO 1996',
+        title: 'Neo-Magic Crystal',
+        shortSub: 'Carcasa ovoide magenta tradicional.',
+        desc: 'Edición estándar con acabados neón y respuesta acústica de 4 bits.',
+        price: '120 CYBER-COINS'
+      },
+      {
+        theme: 'velvet',
+        earClass: '',
+        code: 'NIGHT',
+        tag: 'EDICIÓN FOCUS',
+        title: 'Cyber-Velvet Deluxe',
+        shortSub: 'Acabado oscuro para estudio nocturno.',
+        desc: 'Carcasa oscura de edición nocturna diseñada para máxima concentración.',
+        price: '150 CYBER-COINS'
+      }
+    ];
+
+    let adRotationOffset = 0;
+    let currentBottomAdIndex = 0;
+    let ownedShellThemes = ['crystal'];
+    let activeShellTheme = 'crystal';
+
+    function addShellToWardrobe(themeKey) {
+      if (!ownedShellThemes.includes(themeKey)) {
+        ownedShellThemes.push(themeKey);
+      }
+      renderOwnedShellsDrawer();
+    }
+
+    function renderOwnedShellsDrawer() {
+      const countEl = document.getElementById('owned-shells-count');
+      const drawerEl = document.getElementById('wardrobe-shells-drawer');
+      if (countEl) {
+        countEl.textContent = `${ownedShellThemes.length} desbloqueadas`;
+      }
+      if (!drawerEl) return;
+
+      const dotColors = {
+        crystal: '#FF49C2',
+        bunny: '#FFB4AF',
+        cat: '#45113F',
+        bear: '#FFF7AD',
+        frog: '#6B1552',
+        dragon: '#FF49C2',
+        axolotl: '#FFB4AF',
+        velvet: '#45113F'
+      };
+
+      drawerEl.innerHTML = ownedShellThemes.map(themeKey => {
+        const item = edgeAdCatalog.find(entry => entry.theme === themeKey) || { theme: themeKey, title: themeKey };
+        const isActive = activeShellTheme === themeKey ? 'active' : '';
+        const dotColor = item.customBorder || dotColors[themeKey] || '#FF49C2';
+        return `<button class="owned-shell-chip ${isActive}" onclick="applyShellTheme('${themeKey}')" title="${item.title}">
+          <span class="shell-dot" style="background:${dotColor};"></span>
+          <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${item.title}</span>
+        </button>`;
+      }).join('');
+    }
+
+    function closeEdgeAd(elementId) {
+      playRetroClickSFX();
+      const el = document.getElementById(elementId);
+      if (el) el.style.display = 'none';
+    }
+
+    function renderAllEdgeAdSlots() {
+      for (let slot = 0; slot < 4; slot++) {
+        const item = edgeAdCatalog[(adRotationOffset + slot) % edgeAdCatalog.length];
+        const tagEl = document.getElementById(`ad-slot-${slot}-tag`);
+        const shellEl = document.getElementById(`ad-slot-${slot}-shell`);
+        const codeEl = document.getElementById(`ad-slot-${slot}-code`);
+        const titleEl = document.getElementById(`ad-slot-${slot}-title`);
+        const subEl = document.getElementById(`ad-slot-${slot}-sub`);
+        const priceEl = document.getElementById(`ad-slot-${slot}-price`);
+
+        if (tagEl) tagEl.textContent = item.tag;
+        if (shellEl) shellEl.className = `mini-egg-shell shell-${item.theme}`;
+        if (codeEl) codeEl.textContent = item.code;
+        if (titleEl) titleEl.textContent = item.title;
+        if (subEl) subEl.textContent = item.shortSub;
+        if (priceEl) priceEl.textContent = item.price;
+      }
+
+      const bottomItem = edgeAdCatalog[currentBottomAdIndex];
+      const bShell = document.getElementById('bottom-banner-shell');
+      if (bShell) {
+        bShell.className = `mini-egg-shell shell-${bottomItem.theme}`;
+      }
+      const codeEl = document.getElementById('bottom-banner-code');
+      const tagEl = document.getElementById('bottom-banner-tag');
+      const titleEl = document.getElementById('bottom-banner-title');
+      if (codeEl) codeEl.textContent = bottomItem.code;
+      if (tagEl) tagEl.textContent = `${bottomItem.tag} • 1996`;
+      if (titleEl) titleEl.textContent = bottomItem.title;
+    }
+
+    function rotateAllAds() {
+      adRotationOffset = (adRotationOffset + 1) % edgeAdCatalog.length;
+      currentBottomAdIndex = (currentBottomAdIndex + 1) % edgeAdCatalog.length;
+      renderAllEdgeAdSlots();
+    }
+
+    function tryAdSlot(slot) {
+      const item = edgeAdCatalog[(adRotationOffset + slot) % edgeAdCatalog.length];
+      applyShellTheme(item);
+    }
+
+    function buyAdSlot(slot) {
+      const item = edgeAdCatalog[(adRotationOffset + slot) % edgeAdCatalog.length];
+      openPromoAdModal(item.title, item.desc, item.price, item.theme);
+    }
+
+    function tryCurrentBottomBanner() {
+      const item = edgeAdCatalog[currentBottomAdIndex];
+      applyShellTheme(item);
+    }
+
+    function buyCurrentBottomBanner() {
+      const item = edgeAdCatalog[currentBottomAdIndex];
+      openPromoAdModal(item.title, item.desc, item.price, item.theme);
+    }
+
+    setInterval(() => {
+      rotateAllAds();
+    }, 6500);
+
+    function applyShellTheme(itemOrTheme, optionalLabel) {
+      playVictoryFanfareSFX();
+      const item = typeof itemOrTheme === 'object'
+        ? itemOrTheme
+        : edgeAdCatalog.find(entry => entry.theme === itemOrTheme) || {
+            theme: itemOrTheme,
+            earClass: '',
+            title: optionalLabel || itemOrTheme
+          };
+
+      const consoleEl = document.getElementById('tamagotchi-console-case');
+      const earsEl = document.getElementById('console-ears-display');
+
+      activeShellTheme = item.theme;
+      renderOwnedShellsDrawer();
+
+      if (earsEl) {
+        earsEl.className = item.earClass ? `console-ears ${item.earClass}` : 'console-ears';
+      }
+
+      if (consoleEl) {
+        if (item.customBg) {
+          consoleEl.style.background = item.customBg;
+          consoleEl.style.borderColor = item.customBorder || '#FFF7AD';
+        } else if (item.theme === 'bunny') {
+          consoleEl.style.background = 'linear-gradient(155deg, #FFB4AF, #FF49C2 85%)';
+          consoleEl.style.borderColor = '#FFF7AD';
+        } else if (item.theme === 'cat') {
+          consoleEl.style.background = 'linear-gradient(155deg, #45113F, #FF49C2 90%)';
+          consoleEl.style.borderColor = '#FFF7AD';
+        } else if (item.theme === 'bear') {
+          consoleEl.style.background = 'linear-gradient(155deg, #FFF7AD, #FFB4AF 85%)';
+          consoleEl.style.borderColor = '#FF49C2';
+        } else if (item.theme === 'frog') {
+          consoleEl.style.background = 'linear-gradient(155deg, #6B1552, #FF49C2 85%)';
+          consoleEl.style.borderColor = '#FFF7AD';
+        } else if (item.theme === 'dragon') {
+          consoleEl.style.background = 'linear-gradient(155deg, #FF49C2, #45113F 88%)';
+          consoleEl.style.borderColor = '#FFF7AD';
+        } else if (item.theme === 'axolotl') {
+          consoleEl.style.background = 'linear-gradient(155deg, #FFB4AF, #6B1552 85%)';
+          consoleEl.style.borderColor = '#FF49C2';
+        } else if (item.theme === 'velvet') {
+          consoleEl.style.background = 'linear-gradient(155deg, #45113F, #6B1552 90%)';
+          consoleEl.style.borderColor = '#FFF7AD';
+        } else {
+          consoleEl.style.background = 'linear-gradient(155deg, #7a185d, #45113F 85%)';
+          consoleEl.style.borderColor = '#FF49C2';
+        }
+      }
+      const msg = document.getElementById('pet-msg');
+      if (msg) msg.textContent = `Carcasa aplicada: ${item.title}`;
+      switchTab('study');
+    }
+
+    let selectedPromoTheme = 'crystal';
+
+    function openPromoAdModal(title, desc, price, themeKey) {
+      playRetroClickSFX();
+      selectedPromoModel = title;
+      selectedPromoTheme = themeKey || 'crystal';
+      document.getElementById('promo-modal-title').textContent = title;
+      document.getElementById('promo-modal-desc').textContent = desc;
+      document.getElementById('promo-modal-price').textContent = `PRECIO PROMOCIONAL: ${price}`;
+      document.getElementById('promo-ad-modal').classList.add('active');
+    }
+
+    function closePromoAdModal() {
+      playRetroClickSFX();
+      document.getElementById('promo-ad-modal').classList.remove('active');
+    }
+
+    function confirmSimulatedOrder() {
+      playVictoryFanfareSFX();
+      addShellToWardrobe(selectedPromoTheme);
+      applyShellTheme(selectedPromoTheme);
+      document.getElementById('promo-modal-desc').textContent = `"${selectedPromoModel}" añadida a tus Carcasas Adquiridas en el Armario Virtual.`;
+    }
+
+    /* =========================================================
+       NAVEGACIÓN Y POMODORO (CONTROL DE 4 CICLOS)
+       ========================================================= */
+    function switchTab(tabId) {
+      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+
+      const targetView = document.getElementById(`view-${tabId}`);
+      if (targetView) targetView.classList.add('active');
+      
+      const navButtons = document.querySelectorAll('.nav-btn');
+      if (tabId === 'home' && navButtons[0]) navButtons[0].classList.add('active');
+      if (tabId === 'study' && navButtons[1]) navButtons[1].classList.add('active');
+      if (tabId === 'history' && navButtons[2]) navButtons[2].classList.add('active');
+    }
+
+    function updatePomodoroStatusBadge() {
+      const modeTextEl = document.getElementById('pomodoro-mode-text');
+      const modeDotEl = document.getElementById('pomodoro-mode-dot');
+      const stripCycle = document.getElementById('strip-cycle-count');
+
+      if (modeTextEl) {
+        modeTextEl.textContent = isStudyMode ? `MODO ESTUDIO • BLOQUE ${currentCycleCount}/4` : `MODO DESCANSO • BLOQUE ${currentCycleCount}/4`;
+      }
+      if (modeDotEl) {
+        modeDotEl.style.background = isStudyMode ? '#FF49C2' : '#FFF7AD';
+        modeDotEl.style.boxShadow = isStudyMode ? '0 0 8px #FF49C2' : '0 0 8px #FFF7AD';
+      }
+      if (stripCycle) {
+        stripCycle.textContent = `${currentCycleCount} / 4`;
+      }
+    }
+
+    function updateDisplay() {
+      const m = Math.floor(secondsLeft / 60).toString().padStart(2, '0');
+      const s = (secondsLeft % 60).toString().padStart(2, '0');
+      const display = document.getElementById('timer-display');
+      if (display) display.textContent = `${m}:${s}`;
+
+      const stripStudy = document.getElementById('strip-study-min');
+      const stripBreak = document.getElementById('strip-break-min');
+      if (stripStudy) stripStudy.textContent = `${studyMinutes} min`;
+      if (stripBreak) stripBreak.textContent = `${breakMinutes} min`;
+      updatePomodoroStatusBadge();
+    }
+
+    function toggleTimer() {
+      initAudio();
+      const btn = document.getElementById('btn-start');
+      const patioBtn = document.getElementById('btn-patio');
+      const playBtn = document.getElementById('btn-play-action');
+      
+      if (isRunning) {
+        clearInterval(timerId);
+        isRunning = false;
+        if (btn) btn.textContent = 'INICIAR';
+        stopAmbientSound();
+        stopDynamicPomodoroPoses();
+        if (playBtn) {
+          playBtn.classList.remove('disabled-study');
+          playBtn.title = 'Jugar';
+        }
+      } else {
+        isRunning = true;
+        if (btn) btn.textContent = 'PAUSAR';
+        startAmbientSound(document.getElementById('select-ambient').value);
+        
+        if (isStudyMode) {
+          petStats.isAtPatio = false;
+          if (patioBtn) patioBtn.style.display = 'none';
+          if (playBtn) {
+            playBtn.classList.add('disabled-study');
+            playBtn.title = 'No puedes jugar mientras estudias';
+          }
+          startDynamicPomodoroPoses();
+        } else {
+          currentPose = 'break_relax';
+          if (patioBtn) patioBtn.style.display = 'flex';
+          const msg = document.getElementById('pet-msg');
+          if (msg) msg.textContent = `Descanso bloque ${currentCycleCount}/4: Usa el botón 🌳 para ir al patio.`;
+        }
+        
+        timerId = setInterval(() => {
+          if (secondsLeft > 0) {
+            secondsLeft--;
+            updateDisplay();
+          } else {
+            clearInterval(timerId);
+            isRunning = false;
+            if (btn) btn.textContent = 'INICIAR';
+            stopAmbientSound();
+            stopDynamicPomodoroPoses();
+            if (playBtn) {
+              playBtn.classList.remove('disabled-study');
+              playBtn.title = 'Jugar';
+            }
+            if (patioBtn) patioBtn.style.display = 'none';
+            petStats.isAtPatio = false;
+            
+            if (isStudyMode) {
+              playRetroClickSFX();
+              isStudyMode = false;
+              secondsLeft = breakMinutes * 60;
+              currentPose = 'break_relax';
+              if (patioBtn) patioBtn.style.display = 'flex';
+              const msg = document.getElementById('pet-msg');
+              if (msg) msg.textContent = `¡Estudio terminado! Descanso bloque ${currentCycleCount}/4 (¡Puedes ir al patio!).`;
+            } else {
+              if (currentCycleCount < 4) {
+                currentCycleCount++;
+                isStudyMode = true;
+                secondsLeft = studyMinutes * 60;
+                currentPose = 'idle';
+                playRetroClickSFX();
+                if (playBtn) {
+                  playBtn.classList.add('disabled-study');
+                  playBtn.title = 'No puedes jugar mientras estudias';
+                }
+                const msg = document.getElementById('pet-msg');
+                if (msg) msg.textContent = `Iniciando bloque de estudio ${currentCycleCount}/4...`;
+              } else {
+                playVictoryFanfareSFX();
+                petStats.coins += 100;
+                updatePetUI();
+                
+                triggerSurpriseLoot();
+
+                currentCycleCount = 1;
+                isStudyMode = true;
+                secondsLeft = studyMinutes * 60;
+                currentPose = 'idle';
+                if (playBtn) {
+                  playBtn.classList.add('disabled-study');
+                  playBtn.title = 'No puedes jugar mientras estudias';
+                }
+                const msg = document.getElementById('pet-msg');
+                if (msg) msg.textContent = '¡Sesión completa de 4 ciclos finalizada con éxito!';
+              }
+            }
+            updateDisplay();
+          }
+        }, 1000);
+      }
+    }
+
+    function resetTimer() {
+      if (isRunning) {
+        clearInterval(timerId);
+        isRunning = false;
+        const btn = document.getElementById('btn-start');
+        if (btn) btn.textContent = 'INICIAR';
+        stopAmbientSound();
+        stopDynamicPomodoroPoses();
+      }
+      isStudyMode = true;
+      currentCycleCount = 1;
+      currentPose = 'idle';
+      secondsLeft = studyMinutes * 60;
+      petStats.isAtPatio = false;
+      const patioBtn = document.getElementById('btn-patio');
+      if (patioBtn) patioBtn.style.display = 'none';
+      const playBtn = document.getElementById('btn-play-action');
+      if (playBtn) playBtn.classList.remove('disabled-study');
+      updateDisplay();
+    }
+
+    function updateCustomTimes() {
+      const sVal = Math.max(1, parseInt(document.getElementById('input-study').value) || 25);
+      const bVal = Math.max(1, parseInt(document.getElementById('input-break').value) || 5);
+      studyMinutes = sVal;
+      breakMinutes = bVal;
+      if (!isRunning) {
+        secondsLeft = (isStudyMode ? studyMinutes : breakMinutes) * 60;
+        updateDisplay();
+      } else {
+        updateDisplay();
+      }
+    }
+
+    function startAmbientSound(type) {
+      if (type === 'none' || !audioCtx) return;
+      stopAmbientSound();
+
+      const bufferSize = audioCtx.sampleRate * 2;
+      const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
+      }
+
+      const whiteNoise = audioCtx.createBufferSource();
+      whiteNoise.buffer = noiseBuffer;
+      whiteNoise.loop = true;
+
+      const filter = audioCtx.createBiquadFilter();
+      if (type === 'rain') {
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(1000, audioCtx.currentTime);
+      } else if (type === 'waves') {
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(400, audioCtx.currentTime);
+      } else {
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(3000, audioCtx.currentTime);
+      }
+
+      const gainNode = audioCtx.createGain();
+      gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+
+      whiteNoise.connect(filter);
+      filter.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+
+      whiteNoise.start();
+      ambientSource = whiteNoise;
+    }
+
+    function stopAmbientSound() {
+      if (ambientSource) {
+        ambientSource.stop();
+        ambientSource = null;
+      }
+    }
+
+    function updatePetUI() {
+      const coinsEl = document.getElementById('stat-coins');
+      if (coinsEl) coinsEl.textContent = petStats.coins;
+
+      const stageNames = ['', 'BEBÉ', 'NIÑO', 'JOVEN', 'ADULTO'];
+      const badgeEl = document.getElementById('stat-species-badge');
+      if (badgeEl) {
+        badgeEl.textContent = `${currentPetSpecies.name.toUpperCase()} • ${stageNames[petStats.age] || 'BEBÉ'}`;
+      }
+
+      const healthVal = Math.max(0, Math.min(100, Math.round(petStats.health)));
+      const hungerVal = Math.max(0, Math.min(100, Math.round(petStats.hunger)));
+      const happyVal = Math.max(0, Math.min(100, Math.round(petStats.happiness)));
+
+      const valHealthEl = document.getElementById('val-health');
+      const barHealthEl = document.getElementById('bar-health');
+      if (valHealthEl) valHealthEl.textContent = `${healthVal}%`;
+      if (barHealthEl) {
+        barHealthEl.style.width = `${healthVal}%`;
+        barHealthEl.style.background = healthVal > 50 ? '#00E676' : (healthVal > 25 ? '#FFEA00' : '#FF1744');
+      }
+
+      const valHungerEl = document.getElementById('val-hunger');
+      const barHungerEl = document.getElementById('bar-hunger');
+      if (valHungerEl) valHungerEl.textContent = `${hungerVal}%`;
+      if (barHungerEl) {
+        barHungerEl.style.width = `${hungerVal}%`;
+        barHungerEl.style.background = hungerVal > 50 ? '#FF9100' : '#FF1744';
+      }
+
+      const valHappyEl = document.getElementById('val-happy');
+      const barHappyEl = document.getElementById('bar-happy');
+      if (valHappyEl) valHappyEl.textContent = `${happyVal}%`;
+      if (barHappyEl) {
+        barHappyEl.style.width = `${happyVal}%`;
+        barHappyEl.style.background = happyVal > 50 ? '#FF49C2' : '#FF1744';
+      }
+      saveGameData();
+    }
+
+    function checkEvolution() {
+      if (petStats.isDead) return;
+      petStats.experience = (petStats.experience || 0) + 1;
+      let newAge = 1;
+      if (petStats.experience >= 9) newAge = 4;
+      else if (petStats.experience >= 6) newAge = 3;
+      else if (petStats.experience >= 3) newAge = 2;
+
+      if (newAge > petStats.age) {
+        petStats.age = newAge;
+        playVictoryFanfareSFX();
+        const stageNames = ['', 'Bebé', 'Niño', 'Adolescente', 'Adulto'];
+        const msg = document.getElementById('pet-msg');
+        if (msg) {
+          msg.textContent = `✨ ¡${currentPetSpecies.name} evolucionó a etapa ${stageNames[newAge]}!`;
+        }
+        renderPetAndRoom();
+      }
+    }
+
+    function openFoodModal() {
+      playRetroClickSFX();
+      if (petStats.isDead) {
+        const msg = document.getElementById('pet-msg');
+        if (msg) msg.textContent = 'Tu mascota falleció. Eclosiona un nuevo huevo.';
+        return;
+      }
+      const modal = document.getElementById('food-modal');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeFoodModal() {
+      playRetroClickSFX();
+      const modal = document.getElementById('food-modal');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function openWardrobeModal() {
+      playRetroClickSFX();
+      renderOwnedShellsDrawer();
+      const modal = document.getElementById('wardrobe-modal');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeWardrobeModal() {
+      playRetroClickSFX();
+      const modal = document.getElementById('wardrobe-modal');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function openSettingsModal() {
+      playRetroClickSFX();
+      const modal = document.getElementById('settings-modal');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeSettingsModal() {
+      playRetroClickSFX();
+      const modal = document.getElementById('settings-modal');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function changeAmbientSound(val) {
+      if (isRunning) {
+        stopAmbientSound();
+        startAmbientSound(val);
+      }
+    }
+
+    function feedPet(foodType = 'onigiri') {
+      if (petStats.isDead) return;
+      if (petStats.isSleeping) {
+        closeFoodModal();
+        const msg = document.getElementById('pet-msg');
+        if (msg) msg.textContent = 'Está durmiendo. Enciende la luz de su casita primero.';
+        return;
+      }
+
+      const menu = {
+        onigiri: { name: 'Onigiri', cost: 5, hunger: 25, happy: 5, health: 2 },
+        ramen: { name: 'Ramen Caliente', cost: 10, hunger: 45, happy: 10, health: 10 },
+        dango: { name: 'Dango Dulce', cost: 8, hunger: 20, happy: 25, health: 0 },
+        cake: { name: 'Pastel Estelar', cost: 15, hunger: 40, happy: 35, health: 15 }
+      };
+
+      const item = menu[foodType] || menu.onigiri;
+
+      if (petStats.coins >= item.cost) {
+        playFeedSFX();
+        closeFoodModal();
+        petStats.coins -= item.cost;
+        petStats.hunger = Math.min(100, petStats.hunger + item.hunger);
+        petStats.happiness = Math.min(100, petStats.happiness + item.happy);
+        petStats.health = Math.min(100, petStats.health + item.health);
+        if (petStats.isSick && petStats.health > 40) {
+          petStats.isSick = false;
+        }
+
+        eatingState = { active: true, foodType, step: 0 };
+        const biteInterval = setInterval(() => {
+          eatingState.step++;
+          renderPetAndRoom();
+          if (eatingState.step >= 3) {
+            clearInterval(biteInterval);
+            eatingState.active = false;
+            renderPetAndRoom();
+          }
+        }, 450);
+
+        checkEvolution();
+        updatePetUI();
+
+        const msg = document.getElementById('pet-msg');
+        if (msg) msg.textContent = `¡Qué rico ${item.name}! (+${item.hunger}% Hambre)`;
+      } else {
+        closeFoodModal();
+        const msg = document.getElementById('pet-msg');
+        if (msg) msg.textContent = `Necesitas ${item.cost} coins para ${item.name}.`;
+      }
+    }
+
+    function playPet() {
+      if (petStats.isDead) return;
+      if (isRunning && isStudyMode) {
+        const msg = document.getElementById('pet-msg');
+        if (msg) msg.textContent = '🚫 No puedes jugar mientras estudias.';
+        return;
+      }
+      if (petStats.isSleeping) {
+        const msg = document.getElementById('pet-msg');
+        if (msg) msg.textContent = 'Está durmiendo. Enciende la luz de su casita para jugar.';
+        return;
+      }
+      playGameSFX();
+      petStats.happiness = Math.min(100, petStats.happiness + 20);
+      petStats.hunger = Math.max(0, petStats.hunger - 5);
+      checkEvolution();
+      updatePetUI();
+      const msg = document.getElementById('pet-msg');
+      if (msg) msg.textContent = `¡Jugaste con ${currentPetSpecies.name}! (+20% Ánimo)`;
+    }
+
+    function cleanPet() {
+      if (petStats.isDead) return;
+      playGameSFX();
+      petStats.dirtCount = 0;
+      petStats.happiness = Math.min(100, petStats.happiness + 10);
+      checkEvolution();
+      updatePetUI();
+      const msg = document.getElementById('pet-msg');
+      if (msg) msg.textContent = '¡Suciedad barrida! Pantalla LCD impecable.';
+    }
+
+    function takePetToPatio() {
+      if (petStats.isDead) return;
+      if (isStudyMode && isRunning) {
+        const msg = document.getElementById('pet-msg');
+        if (msg) msg.textContent = '🚫 No puedes salir al patio mientras estudias.';
+        return;
+      }
+      playRetroClickSFX();
+      petStats.isAtPatio = !petStats.isAtPatio;
+      const msg = document.getElementById('pet-msg');
+      if (petStats.isAtPatio) {
+        petStats.happiness = Math.min(100, petStats.happiness + 15);
+        if (msg) msg.textContent = `🌳 ${currentPetSpecies.name} salió al patio a tomar aire fresco (+15% Ánimo).`;
+      } else {
+        if (msg) msg.textContent = `🏠 ${currentPetSpecies.name} regresó adentro.`;
+      }
+      renderPetAndRoom();
+      updatePetUI();
+    }
+
+    function toggleLights() {
+      if (petStats.isDead) return;
+      playRetroClickSFX();
+      petStats.isSleeping = !petStats.isSleeping;
+      const screen = document.getElementById('lcd-screen');
+      const msg = document.getElementById('pet-msg');
+      const lightBtn = document.getElementById('btn-light');
+
+      if (petStats.isSleeping) {
+        petStats.isAtPatio = false;
+        if (screen) screen.classList.add('lights-off');
+        if (lightBtn) lightBtn.style.filter = 'brightness(0.75)';
+        if (msg) msg.textContent = `💤 Luz de la casita apagada: ${currentPetSpecies.name} duerme...`;
+      } else {
+        if (screen) screen.classList.remove('lights-off');
+        if (lightBtn) lightBtn.style.filter = '';
+        if (msg) msg.textContent = `💡 ¡Luz encendida! ${currentPetSpecies.name} está despierto.`;
+      }
+      renderPetAndRoom();
+      updatePetUI();
+    }
+
+    function toggleManualModal() {
+      playRetroClickSFX();
+      const modal = document.getElementById('manual-modal');
+      if (modal) modal.classList.toggle('active');
+    }
+
+    setInterval(() => {
+      if (petStats.isDead) return;
+
+      // Inmunidad durante el estudio: no baja salud y no puede morir
+      if (isRunning && isStudyMode) {
+        return;
+      }
+
+      if (petStats.isSleeping) {
+        petStats.health = Math.min(100, petStats.health + 8);
+        petStats.happiness = Math.min(100, petStats.happiness + 3);
+        petStats.hunger = Math.max(0, petStats.hunger - 2);
+      } else {
+        petStats.hunger = Math.max(0, petStats.hunger - 5);
+        petStats.happiness = Math.max(0, petStats.happiness - 4);
+
+        if (Math.random() < 0.35 && petStats.dirtCount < 4) {
+          petStats.dirtCount++;
+        }
+
+        if (petStats.health <= 30 || petStats.dirtCount >= 3) {
+          petStats.isSick = true;
+        }
+
+        if (petStats.hunger === 0) {
+          petStats.health = Math.max(0, petStats.health - 10);
+        }
+        if (petStats.isSick) {
+          petStats.health = Math.max(0, petStats.health - 8);
+        }
+      }
+
+      if (petStats.health <= 0) {
+        petStats.health = 0;
+        petStats.isDead = true;
+        petStats.isSleeping = false;
+        petStats.isSick = false;
+        petStats.isAtPatio = false;
+        const screen = document.getElementById('lcd-screen');
+        if (screen) screen.classList.remove('lights-off');
+        const msg = document.getElementById('pet-msg');
+        if (msg) msg.textContent = `💀 ${currentPetSpecies.name} falleció. Pulsa Nuevo Huevo.`;
+      }
+
+      updatePetUI();
+    }, 20000);
+
+    function saveGameData() {
+      try {
+        const data = {
+          petStats,
+          currentPetSpecies,
+          currentAccessory,
+          currentAccessoryColor,
+          ownedShellThemes,
+          activeShellTheme,
+          unlockedLimitedAccessories,
+          currentCycleCount
+        };
+        localStorage.setItem('studygotchi_save_v4', JSON.stringify(data));
+      } catch (e) {}
+    }
+
+    function loadGameData() {
+      try {
+        const raw = localStorage.getItem('studygotchi_save_v4');
+        if (raw) {
+          const data = JSON.parse(raw);
+          if (data.petStats) Object.assign(petStats, data.petStats);
+          if (data.currentPetSpecies) currentPetSpecies = data.currentPetSpecies;
+          if (data.currentAccessory) currentAccessory = data.currentAccessory;
+          if (data.currentAccessoryColor) currentAccessoryColor = data.currentAccessoryColor;
+          if (Array.isArray(data.ownedShellThemes)) ownedShellThemes = data.ownedShellThemes;
+          if (data.activeShellTheme) activeShellTheme = data.activeShellTheme;
+          if (data.currentCycleCount) currentCycleCount = data.currentCycleCount;
+          if (Array.isArray(data.unlockedLimitedAccessories)) {
+            data.unlockedLimitedAccessories.forEach(acc => unlockLimitedAccessory(acc));
+          }
+        }
+      } catch (e) {}
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadGameData();
+      updatePetUI();
+      updateDisplay();
+      renderAllEdgeAdSlots();
+      renderOwnedShellsDrawer();
+      if (activeShellTheme) applyShellTheme(activeShellTheme);
+      if (currentAccessory) equipAccessory(currentAccessory);
+      if (petStats.isSleeping && !petStats.isDead) {
+        const screen = document.getElementById('lcd-screen');
+        const lightBtn = document.getElementById('btn-light');
+        if (screen) screen.classList.add('lights-off');
+        if (lightBtn) lightBtn.style.filter = 'brightness(0.75)';
+      }
+      renderPetAndRoom();
+    });
+  </script>
+</body>
+</html>
